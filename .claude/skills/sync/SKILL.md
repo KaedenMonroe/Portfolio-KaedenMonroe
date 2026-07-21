@@ -1,7 +1,7 @@
 ---
 name: sync
-allowed-tools: Bash, Read, Grep, Glob, Write, Edit, Agent
-description: "Run /sync as the last step after a change is complete, around merge, to keep durable knowledge current. Updates root and nested AGENTS.md, reconciles the scope from repo evidence, and flags specs the change made stale. Surgical edits only: it adds lines, and rewrites single lines it owns. Never a whole section, never curated prose."
+allowed-tools: Bash, Read, Grep, Glob, Write, Edit, Agent, ExitWorktree
+description: "Run /sync as the last step after a change is complete, around merge, to keep durable knowledge current. Updates root and nested AGENTS.md, reconciles the scope from repo evidence, flags specs the change made stale, and merges a feature's isolated worktree back to the base branch once it reaches done. Surgical edits only: it adds lines, and rewrites single lines it owns. Never a whole section, never curated prose."
 ---
 
 ## Output style (plain words, no dashes, no hyphens)
@@ -12,7 +12,7 @@ Write everything this skill produces, files and messages alike, in plain simple 
 
 ## What this skill does
 
-Closes the loop on a completed change: syncs AGENTS.md files, the scope, and linked spec `**Status**:` lines to what the repo now shows, and flags what it must not edit (stale specs, curated prose). The Boundaries table below is the exact contract.
+Closes the loop on a completed change: syncs AGENTS.md files, the scope, and linked spec `**Status**:` lines to what the repo now shows, flags what it must not edit (stale specs, curated prose), and, when `/develop` isolated the build in its own worktree (per its "Before you build" step) and the feature has just reached `done`, commits the outstanding work, merges that worktree back to the base branch, and removes it. The Boundaries table below is the exact contract.
 
 **`agent-prompt.md`** is the single source of truth for the maintenance rules; SKILL.md covers only orchestration. The main thread reads it and does the maintenance itself (see Step 3).
 
@@ -33,16 +33,18 @@ Closes the loop on a completed change: syncs AGENTS.md files, the scope, and lin
 | Reconcile the scope, for the **relevant workspace's** scope file only (not all of `docs/scope/`), tick **any** completed sub task from repo **evidence** (code, tests, AGENTS.md), advance status | ✅ corrects | /sync |
 | Add / reorder features or sub tasks in the scope | ❌ leaves alone | /scope |
 | Overwrite or rewrite curated AGENTS.md prose | ❌ flags conflict instead | human |
+| A feature built on an isolated worktree (`/develop`'s step) just reached `done`: commit the outstanding work, merge the worktree's branch into the base branch, remove the worktree and its branch | ✅ merges + cleans up | /sync |
+| The merge back hits a conflict, or the feature isn't `done` yet | ❌ leaves the worktree as is, flags it | human |
 
 The dividing line on creation is **context, not policy**: create only when this change shows you the whole area; defer to /audit when the area predates the change and you've seen only a slice. When unsure, **flag instead of creating**.
 
 ## Asks vs acts
 
-**Acts.** Pauses only when there is **nothing to sync** (empty change set). Every edit to curated files is listed in the report so you can review or revert.
+**Acts.** Pauses only when there is **nothing to sync** (empty change set). Every edit to curated files is listed in the report so you can review or revert. The worktree merge back is also unattended once its one condition is met (the feature just reached `done`); a merge conflict or an unfinished feature stops it and flags instead of forcing anything.
 
 ## Artifact ownership
 
-Owns exactly what the Boundaries table grants and writes nothing else. As the **universal sub task reconciler** it ticks any scope sub task it can verify from repo evidence (sweeping the `/test`/`/audit`/`/sync` sub tasks other skills don't tick) and advances feature status; exact rules in `agent-prompt.md`.
+Owns exactly what the Boundaries table grants and writes nothing else. As the **universal sub task reconciler** it ticks any scope sub task it can verify from repo evidence (sweeping the `/test`/`/audit`/`/sync` sub tasks other skills don't tick) and advances feature status; exact rules in `agent-prompt.md`. When a feature it just closed to `done` was built on an isolated worktree, it also owns committing that worktree's outstanding changes, merging it into the base branch, and removing the worktree and branch afterward; exact rules in `agent-prompt.md`.
 
 **Artifact base.** specs and the scope live under `docs/` by default, or `.workflow/` if `docs/` is a published docs site; use whichever base exists in the repo (paths here assume `docs/`).
 
@@ -50,7 +52,7 @@ Owns exactly what the Boundaries table grants and writes nothing else. As the **
 
 ## Portability (any OS, any agent)
 
-- **Commands**: `git` is the only required CLI and behaves the same on every OS, run the `git` lines as shown. Other shell snippets are POSIX **reference**, not literal scripts: don't assume `find`, `grep`, `sed`, `cat`, `test`/`[ ]`, `ls`, or `xargs` exist; use your agent's cross platform file tools and apply branching logic yourself rather than shell `if`/variables/redirects.
+- **Commands**: `git` is the only required CLI and behaves the same on every OS, run the `git` lines as shown. Other shell snippets are POSIX **reference**, not literal scripts: don't assume `find`, `grep`, `sed`, `cat`, `test`/`[ ]`, `ls`, or `xargs` exist; use your agent's cross platform file tools and apply branching logic yourself rather than shell `if`/variables/redirects. The worktree merge back (`agent-prompt.md` Step 7) is Claude Code's `ExitWorktree` for the exit-and-keep step, plain `git worktree remove` / `git branch -d` for cleanup; every other agent uses plain `git` throughout, no special tool required.
 - **Bundled files**: referenced by paths relative to this skill's folder. Resolve the folder to an absolute path (you already resolve these relative paths) and read `agent-prompt.md` yourself at write time (Step 3), not during the earlier steps.
 - The whole maintenance runs inline on the main thread, following the exact rules in **`agent-prompt.md`** (authoritative).
 
@@ -61,6 +63,8 @@ Owns exactly what the Boundaries table grants and writes nothing else. As the **
 **Freshness first (teams):** `git fetch --quiet`; if `git rev-list --count HEAD..origin/$BASE` > 0 you are behind `origin/$BASE`, warn the engineer to pull first, a teammate may have already synced these docs.
 
 Base: `main` if `git rev-parse --verify main` succeeds, else `master`. Current branch: `git rev-parse --abbrev-ref HEAD`. Use `--name-status` (not `--name-only`); the net new area and orphan cleanup logic need **A**dded vs **M**odified vs **D**eleted per file.
+
+**Worktree state (for Step 3.5 later, cheap to note now):** compare `git rev-parse --git-dir` to `git rev-parse --git-common-dir`; equal means the primary checkout, different means the session is running inside a linked worktree (`/develop`'s isolation step, or one named manually). Note `IN_WORKTREE = yes/no`, the worktree's branch name (`git rev-parse --abbrev-ref HEAD`, same command as above), and its path (`git rev-parse --show-toplevel`). Not a git repo, or already on the base branch → `IN_WORKTREE = no`, nothing further to note here.
 
 - Current branch **is** the base, mode `uncommitted`: `git diff --name-status HEAD`.
 - Otherwise, mode `branch`: `git merge-base "$BASE" HEAD`, then `git diff --name-status <merge-base>`.
@@ -108,7 +112,7 @@ Run only when dependency manifests changed or the diff clearly adds a significan
 
 ### 3. Do the maintenance (main thread)
 
-The main thread does the maintenance itself; it never hands the `AGENTS.md` / scope / spec status edits to a subagent. Read `agent-prompt.md` now (only now, at write time) and follow it exactly; it is authoritative for the maintenance rules. The diff reading is the one thing you may offload, and only for a large change set, to a read only `scout` subagent on the cheapest model (Claude Code: `haiku`) that returns a compact map. Stay within the same boundaries the old tool grant expressed: `Edit` existing docs, scope, and spec `**Status**:` lines; `Write` strictly for a **net new area** nested AGENTS.md; no root creation, no spec *content* edits (Status line only), no shallow nested docs for established areas (these are rules in `agent-prompt.md`).
+The main thread does the maintenance itself; it never hands the `AGENTS.md` / scope / spec status edits to a subagent. Read `agent-prompt.md` now (only now, at write time) and follow it exactly; it is authoritative for the maintenance rules, including its last step: when `IN_WORKTREE = yes` and a touched feature just reached `done`, committing the worktree's outstanding work, merging it into `BASE`, and removing the worktree and branch (on Claude Code, `ExitWorktree` handles the exit and cleanup; elsewhere, plain `git` commands do the same job). The diff reading is the one thing you may offload, and only for a large change set, to a read only `scout` subagent on the cheapest model (Claude Code: `haiku`) that returns a compact map. Stay within the same boundaries the old tool grant expressed: `Edit` existing docs, scope, and spec `**Status**:` lines; `Write` strictly for a **net new area** nested AGENTS.md; no root creation, no spec *content* edits (Status line only), no shallow nested docs for established areas (these are rules in `agent-prompt.md`).
 
 The inputs to apply:
   1. `MODE`, `BASE`, `MERGE_BASE`, `CHANGED_FILES` (name status changed source list), `DIFF_COMMAND` (exact `git diff` command)
@@ -118,6 +122,7 @@ The inputs to apply:
   5. `FILE_TO_CONTEXT_MAP` (changed file → nearest context file)
   6. `SCOPE_PATH_OR_NONE` (relevant workspace scope path(s), not all of `docs/scope/`; also the source of each linked feature's status for spec Status line reconciliation)
   7. `INSTALLED_SKILLS_OR_NONE`, `MCP_SERVERS_OR_NONE`, `DECLINED_TOOLS_OR_NONE` from Step 2.5
+  8. `IN_WORKTREE`, the worktree's branch name and path
 
 ### 4. Relay the result
 
@@ -142,6 +147,12 @@ The inputs to apply:
 
 **Spec statuses reconciled** (Status line only):
 - `docs/specs/<file>`, <Status Proposed→In Progress→Accepted to match the feature's scope status>
+
+**Worktree merged** (only when Step 3.5 ran):
+- `<branch>` → `<base>`, <commit summary, fast-forward or merge commit, worktree and branch removed>
+
+**Worktree merge blocked** (only when Step 3.5 found a reason not to merge):
+- `<branch>`, <conflict / feature not yet done / other reason>, worktree left as is
 
 **Specs flagged stale** (run /architect to update or supersede):
 - `docs/specs/<file>`, <why the change makes it stale, or status mismatch sync couldn't safely resolve>

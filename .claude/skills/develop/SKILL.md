@@ -1,6 +1,6 @@
 ---
 name: develop
-allowed-tools: Bash, Read, Grep, Glob, Write, Edit, Agent, AskUserQuestion
+allowed-tools: Bash, Read, Grep, Glob, Write, Edit, Agent, AskUserQuestion, EnterWorktree
 description: "Run /develop to build a feature, UI or backend, from an approved design, a page, component, API, service, or data slice. If something load bearing is undecided and no spec records it, it stops and routes you to /architect; otherwise it reads the spec plus AGENTS.md, builds, and advances the scope."
 ---
 
@@ -31,7 +31,7 @@ Gates, then acts: no upfront question rounds like `/architect`. Read the decisio
 
 ## Portability (any OS, any agent)
 
-Any Agent Skills client, macOS/Linux/Windows. Detection snippets are POSIX reference; use your agent's own cross platform file tools. Builds inline on the main thread (Step 3); the only subagents are a read only `scout` that explores code (Step 2.5) and a read only `researcher` for a doc check (Step 2.6, degrading to building from knowledge without web capability), both on the cheapest model. Bundled guides (`ui-guide.md`, `logical-guide.md`, `checklist.md`) and the build flow after the gate (`flow/build.md`) are paths relative to this skill's folder; the main thread reads them. No interactive question picker → ask the prompts as plain text with the same options.
+Any Agent Skills client, macOS/Linux/Windows. Detection snippets are POSIX reference; use your agent's own cross platform file tools. Builds inline on the main thread (Step 3); the only subagents are a read only `scout` that explores code (Step 2.5) and a read only `researcher` for a doc check (Step 2.6, degrading to building from knowledge without web capability), both on the cheapest model. Bundled guides (`ui-guide.md`, `logical-guide.md`, `checklist.md`) and the build flow after the gate (`flow/build.md`) are paths relative to this skill's folder; the main thread reads them. No interactive question picker → ask the prompts as plain text with the same options. Worktree isolation (the "before you build" step) is Claude Code's `EnterWorktree` where available; every other agent uses the portable `git worktree add` fallback given there, no tool required beyond `git`.
 
 ## Execution
 
@@ -44,6 +44,19 @@ Otherwise `/develop` builds into an existing project. No skeleton (no `package.j
 > No project found to build into. Run the scaffold step first (the Stack and architecture feature's scaffold sub task, per your architecture spec), then run `/develop` again.
 
 A project exists (even a bare scaffold) → proceed.
+
+### Before you build: isolate the work in its own worktree (unless already isolated)
+
+Build on a disposable branch, not directly on the engineer's checked out branch, so a build in progress never leaves the main working directory mid change, and a bad or abandoned build is a discarded branch, not a dirty checkout. `/sync` merges it back once the feature reaches `done`.
+
+**Skip this step, proceed straight to the freshness check, when any of these hold:** not a git repository; the session is already running inside a linked worktree (not the repository's primary checkout); or the engineer already named a worktree/branch to build on. Detect "already in a linked worktree" portably: `git rev-parse --git-dir` and `git rev-parse --git-common-dir` are equal in the primary checkout, and differ inside any linked worktree, whichever tool created it.
+
+**Otherwise, open one now, named for the feature** (slug it: lowercase, hyphenated, e.g. `design-system-blueprint-ledger`):
+- Claude Code: call `EnterWorktree` with that name. It creates `.claude/worktrees/<name>` on a fresh branch off the default branch and switches the session into it.
+- No such tool: `git worktree add .worktrees/<feature-slug> -b <feature-slug>` off the base branch (`main`, else `master`), then run every later command from that directory for the rest of this run.
+- Either way, confirm the worktrees directory is gitignored (`.claude/worktrees/`, or wherever yours land) before the first commit lands there; add the entry if it's missing, so a build in progress never shows as untracked content back in the primary checkout.
+
+The rest of this skill (the freshness check, the spec gate, the build flow) runs from inside that worktree. State the worktree name/branch in the Step 4 report (`flow/build.md`) so `/sync` knows what to merge back once the feature is `done`.
 
 ### Before you build: freshness & collaboration (don't build on stale state or over a teammate)
 

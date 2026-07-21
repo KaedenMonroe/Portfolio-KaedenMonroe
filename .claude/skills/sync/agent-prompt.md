@@ -22,6 +22,7 @@ Claude Code loads it via the import below:
 - **Base / merge base**: BASE / MERGE_BASE
 - **Changed source files (with status A/M/R)**: CHANGED_FILES
 - **Deleted paths (status D, for orphan cleanup only)**: DELETED_PATHS
+- **Worktree state (for Step 7 only)**: IN_WORKTREE, and when `yes` its branch name and path
 
 See exactly what changed with:
 
@@ -173,7 +174,22 @@ Then update the feature's **status**, in the `At-a-glance` table AND beside its 
 - **Idempotent**: a box already `[x]` stays `[x]`; running it again changes nothing.
 - **Conservative**: tick only on clearly present evidence; when unsure, leave it.
 
-### 7. Report
+### 7. Merge the worktree back (only when isolated, only once the feature is done)
+
+Only when **both** hold: `IN_WORKTREE = yes` (Step 1 detected a linked worktree), **and** Step 6 just advanced, or already found, at least one of this diff's touched features at `done`. Missing either → skip this step entirely; do not commit, merge, or remove anything, and emit neither `WORKTREE_MERGED` nor `WORKTREE_MERGE_BLOCKED`.
+
+This is the one place `/sync` commits code, because merging requires it: the worktree's own build (whatever `/develop` left uncommitted, per its "acts, never commits" rule) plus the `AGENTS.md`/scope/spec edits this very run just made, all as one commit, on the worktree's own branch.
+
+1. **Commit everything outstanding, still inside the worktree.** `git status --short` to see what's there (should be exactly this feature's build plus this run's doc edits; if it looks like more than that, e.g. an unrelated in-progress feature sharing the same worktree, stop and flag under `WORKTREE_MERGE_BLOCKED` rather than guess what to bundle). Stage all of it and commit with a conventional message naming the feature (`feat: <feature>`, or `feat/fix/chore` per what actually changed). A pre-commit hook fails → stop, flag under `WORKTREE_MERGE_BLOCKED` with the hook's complaint; never `--no-verify`. Nothing to commit (already clean) → continue, nothing to do here.
+2. **Leave the worktree, without discarding it yet.** Claude Code: `ExitWorktree` with `action: "keep"` (not `"remove"`, the merge hasn't happened). Elsewhere: `cd` back to the primary checkout. You cannot merge a branch into `BASE` while still standing inside that same branch's worktree; git also refuses to check out `BASE` from the worktree if it's checked out elsewhere, which is exactly why this order matters.
+3. **Merge into `BASE` from the primary checkout.** `git merge <worktree-branch> --no-edit`. `BASE` hasn't moved since the worktree branched (the common case for a solo or short lived branch) → this fast-forwards cleanly. `BASE` has moved → git attempts a real merge; a clean auto-merge is fine, but **on any conflict, abort immediately** (`git merge --abort`), leave the worktree exactly as it was (do not remove it, do not force a resolution), and flag under `WORKTREE_MERGE_BLOCKED` naming the conflicting files, for the engineer to resolve by hand.
+4. **On a clean merge, confirm the base still works before cleaning up**: run the project's own gate (typecheck/lint/build, whatever `AGENTS.md` names as the standard checks) from the primary checkout. Fails → this is a genuine integration problem (two branches that each worked alone don't work together); do not revert the merge yourself, flag it under `WORKTREE_MERGE_BLOCKED` with what failed, and leave the worktree in place so the engineer has it to debug from.
+5. **Remove the worktree and its branch**, only after the merge and the gate both landed clean: `git worktree remove <path>` then `git branch -d <worktree-branch>` (`-d`, not `-D`; it refuses if the branch somehow isn't fully merged, a last safety check, not just a formality: if it refuses, stop and flag under `WORKTREE_MERGE_BLOCKED` rather than force delete).
+6. **Idempotent.** Re-running `/sync` after a merge already landed: `IN_WORKTREE` will be `no` (the worktree is gone), so this step is naturally skipped. If the worktree exists but its branch is already fully merged into `BASE` (`git merge-base --is-ancestor <branch> BASE`), skip straight to removing it (step 5); do not re-merge or re-commit.
+
+Record the outcome under `WORKTREE_MERGED` (branch, base, fast-forward or merge commit, confirmation the worktree and branch are gone) or `WORKTREE_MERGE_BLOCKED` (branch, exactly what stopped it, and that the worktree was left untouched).
+
+### 8. Report
 
 Output exactly this block, verbatim, no extra prose. Omit any section that's empty.
 
@@ -194,6 +210,12 @@ SCOPE_RECONCILED:
 
 SPEC_STATUS_RECONCILED:
 - <docs/specs/file>, <Status line: Proposed→In Progress→Accepted to match the feature's scope status>
+
+WORKTREE_MERGED:
+- <branch> → <base>, <fast-forward or merge commit; worktree and branch removed>
+
+WORKTREE_MERGE_BLOCKED:
+- <branch>, <what stopped it: conflict, failed gate, dirty worktree, failed hook>; worktree left as is
 
 STALE_SPECS:
 - <docs/specs/file>, <why the change makes it stale, or a status mismatch you couldn't safely reconcile>

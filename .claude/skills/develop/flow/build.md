@@ -107,7 +107,7 @@ Tracks:
   ## Acceptance-criteria coverage
   - AC-1 … covered by step … · AC-2 … · …
   ```
-- Relay the track's report (the `## /develop complete` block from `ui-guide.md` and/or `logical-guide.md`).
-- Recommend the next step: usually `/check verify` (run the steps just emitted/saved), then `/test` to lock the durable ones, then `/sync` to promote new area conventions into `AGENTS.md`. Always end by advising `/clear` before the next feature (the scope, spec, and `AGENTS.md` hold the state, so a fresh session loses nothing; long sessions cost more even when cached). Suggest `/compact` partway through the build if this single feature runs long. (On Claude Code `/clear` / `/compact`; your agent's fresh session equivalent elsewhere.)
+- Relay the track's report (the `## /develop complete` block from `ui-guide.md` and/or `logical-guide.md`). Building on a worktree isolated per the SKILL.md step above → state its name/branch in this report (e.g. "Built on worktree `design-system-blueprint-ledger`"), so `/sync` knows what to merge back once the feature reaches `done`. No worktree (skipped or not applicable) → omit the line.
+- Recommend the next step: usually `/check verify` (run the steps just emitted/saved), then `/test` to lock the durable ones, then `/sync` to promote new area conventions into `AGENTS.md` (and, on a worktree build, merge it back to the base branch once `/test` closes the feature to `done`). Always end by advising `/clear` before the next feature (the scope, spec, and `AGENTS.md` hold the state, so a fresh session loses nothing; long sessions cost more even when cached). Suggest `/compact` partway through the build if this single feature runs long. (On Claude Code `/clear` / `/compact`; your agent's fresh session equivalent elsewhere.)
 
 `/develop` builds; it does not run `/check verify`, `/test`, `/sync`, or `/architect` for you, it points; you decide.
