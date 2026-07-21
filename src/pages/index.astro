@@ -23,13 +23,10 @@ const navLinks = [
   <GridRailShell>
     <NavBar name={profile.name} links={navLinks} />
     <main id="main-content">
-      <h1 class="sr-only">{profile.name} — {profile.heroHeadline}</h1>
-      <!--
-        The hero section that would normally carry a visible page heading is
-        out of scope for this design system foundation (spec 0003); it lands
-        with the full portfolio page (scope item 6). This hidden heading keeps
-        the document to one real h1 in the meantime.
-      -->
+      <SectionBlock id="hero" eyebrow={profile.role}>
+        <h1 class="hero__headline">{profile.heroHeadline}</h1>
+        <p>{profile.heroSubtext}</p>
+      </SectionBlock>
       <div class="about-skills-row">
         <SectionBlock id="about" eyebrow="ABOUT">
           <profile.Content />
@@ -63,6 +60,17 @@ const navLinks = [
 </BaseLayout>
 
 <style>
+  :global(#hero) {
+    border-block-end: var(--border-width) solid var(--border);
+  }
+
+  .hero__headline {
+    margin: 0 0 var(--space-16);
+    max-width: 20ch;
+    font: 600 var(--text-3xl) / 1.15 var(--font-sans);
+    color: var(--ink);
+  }
+
   .about-skills-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
