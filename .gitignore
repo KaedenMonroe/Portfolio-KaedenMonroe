@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # Netlify local state
 .netlify/
+
+# Claude Code worktrees (created per feature, merged and removed by /develop + /sync)
+.claude/worktrees/
