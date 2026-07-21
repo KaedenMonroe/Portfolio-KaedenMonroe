@@ -1,0 +1,32 @@
+# Dependencies
+node_modules
+package-lock.json
+
+# Build outputs
+dist
+.astro
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment files
+.env*.local
+
+# Netlify local state
+.netlify
+
+# IDE
+.vscode
+.idea
+
+# Design reference material (not project source)
+Portfolio brainstorm for mechanical engineer
+
+# Vendored agent skills
+.agents
+.claude
+
+# Living planning docs owned by other tooling (/architect, /scope)
+docs/specs
+docs/scope

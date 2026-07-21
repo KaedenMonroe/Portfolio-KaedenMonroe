@@ -9,9 +9,9 @@ A one page portfolio site for a third year mechanical engineering student, built
 
 | # | Feature | Phase | Status |
 |---|---------|-------|--------|
-| 1 | Stack & architecture | Foundation | in-progress |
-| 2 | Coding standards & tooling | Foundation | planned |
-| 3 | Content model | Foundation | in-progress |
+| 1 | Stack & architecture | Foundation | done |
+| 2 | Coding standards & tooling | Foundation | done |
+| 3 | Content model | Foundation | done |
 | 4 | Design system & Blueprint Ledger UI foundation | Foundation | in-progress |
 | 5 | Walking skeleton | Skeleton | planned |
 | 6 | Blueprint Ledger portfolio page | Slice 1 | planned |
@@ -21,29 +21,33 @@ A one page portfolio site for a third year mechanical engineering student, built
 
 ## Foundations
 
-### 1. Stack & architecture
+### 1. Stack & architecture (done)
 Decide how the static site is built and hosted (plain HTML/CSS/JS versus a static site framework), then scaffold a runnable, deployable project.
 **Done when:** the stack is recorded in a spec, and the empty scaffold builds and deploys to a live preview URL.
-spec [0001](../specs/0001-static-site-stack-and-hosting/index.md)
+spec [0001](../specs/0001-static-site-stack-and-hosting/index.md) · code in project root (`src/`, `astro.config.mjs`, `netlify.toml`)
 - [x] Decide the stack (spec): `/architect stack & architecture`
-- [ ] Scaffold from the decision: `/develop stack & architecture`
+- [x] Scaffold from the decision: `/develop stack & architecture`
+- [x] Smoke check it runs and deploys: `/test stack & architecture`
 
-### 2. Coding standards & tooling
+### 2. Coding standards & tooling (done)
 Capture conventions, then install lint, format, and pre-commit enforcement from the real scaffolded project.
 **Done when:** root `AGENTS.md` reflects the real stack, and lint/format/pre-commit run clean.
-- [ ] Capture conventions + tooling choices: `/audit`
+code in project root (`eslint.config.mjs`, `.prettierrc`, `.prettierignore`, `.husky/`, `.github/workflows/ci.yml`)
+- [x] Capture conventions + tooling choices: `/audit`
+- [x] Install and configure lint, format, pre-commit, CI: `/develop coding standards & tooling`
+- [x] Check it runs clean: `/test coding standards & tooling`
 
-### 3. Content model
+### 3. Content model (done)
 Decide how project, skills, and about content is structured and stored, separate from markup, so it is easy to update once real content is ready.
 **Done when:** all page content (about copy, skills list, project entries) lives in one structured source, and the page renders from it with no hardcoded duplication.
-spec [0002](../specs/0002-content-model.md)
+spec [0002](../specs/0002-content-model/index.md) · code in `src/content.config.ts`, `content/`, `data/skills.ts`, `src/lib/content.ts`
 - [x] Design it (spec): `/architect content model`
-- [ ] Build it: `/develop content model`
-  - [ ] Content schema and validation set up for Profile and Project (AC-1, AC-3, AC-6)
-  - [ ] Real content authored: profile, skills, and the three project write ups (AC-1, AC-2, AC-3, AC-4)
-  - [ ] Typed read functions written, including the position based tag and empty list case (AC-4, AC-5, AC-7)
-- [ ] Verify it: `/check verify content model`
-- [ ] Test it: `/test content model`
+- [x] Build it: `/develop content model`
+  - [x] Content schema and validation set up for Profile and Project (AC-1, AC-3, AC-6)
+  - [x] Real content authored: profile, skills, and the three project write ups (AC-1, AC-2, AC-3, AC-4)
+  - [x] Typed read functions written, including the position based tag and empty list case (AC-4, AC-5, AC-7)
+- [x] Verify it: `/check verify content model`
+- [x] Test it: `/test content model`
 
 ### 4. Design system & Blueprint Ledger UI foundation
 Capture the Blueprint Ledger visual language from the design brainstorm (grid rail, ledger rows, control loop diagram style, type and color tokens, corner marks) into a design spec, plus the base components every section reuses (nav, section block, ledger row, expand and collapse control).

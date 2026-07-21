@@ -43,6 +43,18 @@
       "skillPath": "skills/document/SKILL.md",
       "computedHash": "dd19068ec4c9f26994713079b0a528608e48e6895e3a9fad188fcf4cc9f2b42b"
     },
+    "eslint-prettier-husky-config": {
+      "source": "hopeoverture/worldbuilding-app-skills",
+      "sourceType": "github",
+      "skillPath": "skills/development/eslint-prettier-husky-config/SKILL.md",
+      "computedHash": "0cd7211de6ae658564977bcc6e17d7ae1d0ff6fb1553780cb8a54ef5b137a78d"
+    },
+    "github-actions-templates": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "skillPath": "plugins/cicd-automation/skills/github-actions-templates/SKILL.md",
+      "computedHash": "93e92fd674dea084628e95f9c48af806f9672ac08f815c84f85adedb55742c59"
+    },
     "netlify-config": {
       "source": "netlify/context-and-tools",
       "sourceType": "github",
@@ -78,6 +90,12 @@
       "sourceType": "github",
       "skillPath": "plugins/javascript-typescript/skills/typescript-advanced-types/SKILL.md",
       "computedHash": "8cbf2bf600f392d7260e476e3202932a876e2281cda3b15a8b6a5a43f383252d"
+    },
+    "vitest": {
+      "source": "antfu/skills",
+      "sourceType": "github",
+      "skillPath": "skills/vitest/SKILL.md",
+      "computedHash": "943d436114c677802426741980146c07560bf375297666b03062444f4b98a785"
     }
   }
 }

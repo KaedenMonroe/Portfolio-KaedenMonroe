@@ -1,7 +1,7 @@
 # 0001. Static Site Stack and Hosting
 
 **Date**: 2026-07-18
-**Status**: Proposed
+**Status**: Accepted
 
 ## Summary
 

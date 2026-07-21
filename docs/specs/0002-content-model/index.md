@@ -1,16 +1,11 @@
 # 0002. Content model for the portfolio site
 
 **Date**: 2026-07-18
-**Status**: Proposed
+**Status**: Accepted
 
 ## Summary
 
 This decides where and how the portfolio's real words and data live: the about text, the skills list, and the three project write ups. Structured prose (about bio, project write ups) lives in markdown files with a small set of frontmatter fields, checked against a schema at build time. The skills list, which is just names with no prose, lives in one small typed code file instead. This means editing any copy is a file edit, not a markup change, and a broken or missing field fails the build loudly instead of shipping a broken page.
-
-## Context
-The Blueprint Ledger brainstorm already contains real words: an about paragraph, six skill tags (SolidWorks, Ansys FEA, Python and ROS2, C++ and embedded, CNC and 3D print, PCB layout), and three full project write ups (an autonomous ground platform, a quadrotor prototype, and a suspension bracket FEA study), plus profile links (résumé, email, LinkedIn, GitHub). None of this has a home yet. Left alone, it would be typed straight into page markup, so a copy change becomes a code change, and the page build in scope item 6 would have to invent its own shape for it on the spot.
-
-The project is a single author, static, one page portfolio with no compliance scope and no other person editing content. The scope's deferred list rules out a headless CMS or backend for this pass, and the weight profile calls this a lean or medium decision, not a heavyweight one. The number of entries is small and fixed (three projects at launch, likely staying in the single digits for years), so this is not a scale problem.
 
 ## Requirements
 
@@ -27,43 +22,6 @@ The project is a single author, static, one page portfolio with no compliance sc
 - **AC-6**: Profile fields that are links (résumé, email, LinkedIn, GitHub) and the optional blog link are checked as well formed URLs or emails at build time; a malformed one fails the build instead of shipping a broken link.
 - **AC-7**: No value the page shows for profile, skills, or project content is hardcoded in markup. Every one of them is sourced from `content/profile.md`, `data/skills.ts`, or `content/projects/*.md`.
 
-## Options considered
-
-### Option 1: Plain typed data files for everything (no markdown)
-
-Every entity, including the about bio and project write ups, is a plain TypeScript object exported from a data file.
-
-**Pros**:
-- Zero dependencies and no markdown parsing step; works under any build tool.
-- Fastest to wire up; one mechanism for every entity.
-
-**Cons**:
-- The about bio and project write ups are genuine prose, several sentences of narrative each. Writing that as a quoted string literal is awkward to read, format, and edit, and loses simple rich text like bold or a link.
-
-### Option 2: Markdown and frontmatter, split per entity, schema checked (chosen)
-
-Prose bearing entities (Profile, Project) are markdown files: short structured fields in frontmatter, the prose itself as the file body. The skills list, which has no prose, stays a plain typed data file. A schema (Zod, matching the engineer's pick) checks every field at build time.
-
-**Pros**:
-- Prose gets a natural home: the file body, with normal markdown formatting, separate from the short structured fields.
-- Matches Astro's Content Collections almost exactly (frontmatter plus body, Zod backed schema, a `getCollection` style read), so very little custom plumbing is needed on top of the Astro stack spec 0001 already chose.
-- Editing content that already exists is always a file edit: add a project by adding a file, change a bio sentence by editing prose, no code change either way.
-
-**Cons**:
-- Couples the concrete loading mechanism to a build tool with a markdown and frontmatter content pipeline. Astro (spec 0001) has that built in, so this is a real dependency satisfied, not an open risk.
-- Three different storage shapes across the three entities (markdown files for two, a plain array for one) is one more thing to remember than a single uniform mechanism, even though each shape matches what that entity actually needs.
-
-### Option 3: A headless CMS (for example Contentful or Sanity)
-
-Content is authored through a hosted CMS with a web editing UI, fetched at build or run time.
-
-**Pros**:
-- Lets a non technical person edit content through a web UI, with revision history, without touching code.
-
-**Cons**:
-- This is a single author who is also the developer, editing their own portfolio directly in code; there is no non technical editor to serve.
-- Adds a hosted account, network calls, and a new external service to operate, for a one page site with a handful of entries. The scope's deferred list explicitly rules this out for the current pass.
-
 ## Decision
 
 **Chosen option**: Option 2: Markdown and frontmatter, split per entity, schema checked.
@@ -71,12 +29,6 @@ Content is authored through a hosted CMS with a web editing UI, fetched at build
 Profile and Project are markdown files (frontmatter for short structured fields, body for prose), checked against a Zod schema at build time. SkillCategory, which has no prose, is a plain typed array in `data/skills.ts`.
 
 **Implementation skills**: `astro` (`astrolicious/agent-skills`, `.agents/skills/astro/`); its Content Collections pattern, frontmatter plus body plus a Zod schema, is the direct model for how Profile and Project are structured and validated here
-
-## Rationale
-
-The about bio and project write ups are real prose, several sentences of technical narrative each (see the ground platform, quadrotor, and suspension bracket write ups already drafted in the brainstorm). Option 1's plain string literal either loses formatting or forces manual escaping for anything beyond a single flat sentence, which is the wrong trade for content the owner will keep expanding. Option 3 solves a collaboration and non technical editing problem that does not exist here: one person, who is a developer, edits their own copy, so a hosted CMS only adds an external account and a network dependency the scope's deferred list already rules out.
-
-Option 2 fits both real constraints: prose gets a natural home in the file body, and the skills list, which is genuinely just names with no prose, is not forced into a markdown file it does not need. Schema validation at build time (the engineer's pick, over types alone) matters more here than it might elsewhere, because this is one author working with no second reviewer; a malformed résumé link or a project missing its image should fail the build, not quietly ship.
 
 ## Feature design
 
@@ -165,5 +117,5 @@ All three are flat and independent; nothing here references anything else, since
 
 ## Follow-up
 
-- [ ] No root `AGENTS.md` exists yet. Once item 2 (coding standards and tooling) runs, the `astro` skill's Content Collections convention (frontmatter plus body plus a Zod schema) belongs there alongside the rest of the stack from spec 0001.
-- [ ] Transcribe the real skill tags and the three real project write ups from the brainstorm files into `data/skills.ts` and `content/projects/*.md` as part of build task 3 and 4 above, rather than placeholder text.
+- [x] No root `AGENTS.md` exists yet. Once item 2 (coding standards and tooling) runs, the `astro` skill's Content Collections convention (frontmatter plus body plus a Zod schema) belongs there alongside the rest of the stack from spec 0001. Root `AGENTS.md` now exists; its "Folder structure by layer" line still lists `src/content` generically rather than this spec's root level `content/` and `data/` folders — `/sync` should reconcile that line.
+- [x] Transcribe the real skill tags and the three real project write ups from the brainstorm files into `data/skills.ts` and `content/projects/*.md` as part of build task 3 and 4 above, rather than placeholder text. Done; the profile's résumé, email, LinkedIn, and GitHub fields are still clearly marked TODO placeholders (the brainstorm's own links are dummy `#` hrefs) — the portfolio owner needs to swap in real values before shipping.
