@@ -1,17 +1,90 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GridRailShell from '../components/GridRailShell.astro';
+import NavBar from '../components/NavBar.astro';
+import SectionBlock from '../components/SectionBlock.astro';
+import LedgerRow from '../components/LedgerRow.astro';
+import { getProfile, getProjects, getSkillCategories } from '../lib/content';
 
+const profile = await getProfile();
+const projects = await getProjects();
+const skillCategories = getSkillCategories();
+
+const navLinks = [
+  { label: 'About', href: '#about' },
+  { label: 'Skills', href: '#skills' },
+  { label: 'Projects', href: '#projects' },
+  ...(profile.blogUrl ? [{ label: 'Blog', href: profile.blogUrl, external: true }] : []),
+  { label: 'Résumé', href: profile.resumeUrl, external: true, cta: true },
+];
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
-  </head>
-  <body>
-    <h1>Astro</h1>
-  </body>
-</html>
+<BaseLayout title={`${profile.name} — ${profile.role}`} description={profile.heroSubtext}>
+  <GridRailShell>
+    <NavBar name={profile.name} links={navLinks} />
+    <main id="main-content">
+      <h1 class="sr-only">{profile.name} — {profile.heroHeadline}</h1>
+      <!--
+        The hero section that would normally carry a visible page heading is
+        out of scope for this design system foundation (spec 0003); it lands
+        with the full portfolio page (scope item 6). This hidden heading keeps
+        the document to one real h1 in the meantime.
+      -->
+      <div class="about-skills-row">
+        <SectionBlock id="about" eyebrow="ABOUT">
+          <profile.Content />
+        </SectionBlock>
+        <SectionBlock id="skills" eyebrow="SKILLS">
+          {
+            skillCategories.map((category) => (
+              <div class="skills-group">
+                {category.tags.map((tag) => (
+                  <span class="chip">{tag}</span>
+                ))}
+              </div>
+            ))
+          }
+        </SectionBlock>
+      </div>
+      <SectionBlock id="projects" eyebrow="PROJECTS" />
+      {
+        projects.map((project) => (
+          <LedgerRow
+            tag={project.tag}
+            title={project.title}
+            subtitle={project.subtitle}
+            detail={project.detail}
+            image={project.image}
+          />
+        ))
+      }
+    </main>
+  </GridRailShell>
+</BaseLayout>
+
+<style>
+  .about-skills-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-block-end: var(--border-width) solid var(--border);
+  }
+
+  .about-skills-row :global(.section-block:first-child) {
+    border-inline-end: var(--border-width) solid var(--border);
+  }
+
+  .skills-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+  }
+</style>
+
+<style is:global>
+  .section-block__content p {
+    margin: 0;
+    max-width: 60ch;
+    font: 400 var(--text-lg) / 1.65 var(--font-sans);
+    color: var(--ink-body);
+  }
+</style>

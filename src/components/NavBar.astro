@@ -1,0 +1,84 @@
+---
+interface NavLink {
+  label: string;
+  href: string;
+  external?: boolean;
+  /** Highlights the link as the primary call to action (e.g. Résumé). */
+  cta?: boolean;
+}
+
+interface Props {
+  name: string;
+  links: NavLink[];
+}
+
+const { name, links } = Astro.props;
+---
+
+<header class="nav-bar">
+  <span class="nav-bar__name">{name}</span>
+  <nav class="nav-bar__links" aria-label="Primary">
+    {
+      links.map((link) => (
+        <a
+          href={link.href}
+          class:list={['nav-bar__link', { 'nav-bar__link--cta': link.cta }]}
+          target={link.external ? '_blank' : undefined}
+          rel={link.external ? 'noopener noreferrer' : undefined}
+        >
+          {link.label}
+          {link.external ? ' ↗' : ''}
+          {link.cta ? ' ↓' : ''}
+        </a>
+      ))
+    }
+  </nav>
+</header>
+
+<style>
+  .nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-20) var(--space-40);
+    border-block-end: var(--border-width) solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--paper);
+    z-index: 10;
+  }
+
+  .nav-bar__name {
+    font: 600 var(--text-xl) var(--font-sans);
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+
+  .nav-bar__links {
+    display: flex;
+    gap: var(--space-28);
+    font: 500 var(--text-sm) var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    /* AC-7: groups the section links so supporting browsers highlight
+       the current one via :target-current, with no JavaScript. */
+    scroll-target-group: auto;
+  }
+
+  .nav-bar__link {
+    color: var(--ink-muted);
+    transition: color 120ms ease;
+  }
+
+  .nav-bar__link:hover {
+    color: var(--accent-hover);
+  }
+
+  .nav-bar__link--cta {
+    color: var(--accent);
+  }
+
+  .nav-bar__link:target-current {
+    color: var(--accent);
+  }
+</style>

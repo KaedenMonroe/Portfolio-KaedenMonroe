@@ -1,0 +1,72 @@
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/ibm-plex-mono/ibm-plex-mono-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/ibm-plex-mono/ibm-plex-mono-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/ibm-plex-mono/ibm-plex-mono-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Color */
+  --paper: #ffffff;
+  --rail-bg: #fafaf8;
+  --ink: #161616;
+  --ink-body: #3a3a36;
+  --ink-muted: #6b6b66;
+  --ink-faint: #9a9a94;
+  --accent: #2f6fb8;
+  --accent-hover: #1e4f8a;
+  --border: #e3e2de;
+  --border-faint: #f0efec;
+  --placeholder-a: #eceae5;
+  --placeholder-b: #e2e0da;
+
+  /* Type */
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-sans: Helvetica, Arial, sans-serif;
+  --text-2xs: 9px;
+  --text-xs: 10.5px;
+  --text-sm: 11px;
+  --text-base: 11.5px;
+  --text-md: 13px;
+  --text-lg: 14px;
+  --text-xl: 15px;
+  --text-2xl: 18px;
+  --text-3xl: 54px;
+
+  /* Spacing (named by pixel value, the exact set the Blueprint Ledger mockup uses) */
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-14: 14px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-22: 22px;
+  --space-28: 28px;
+  --space-40: 40px;
+  --space-44: 44px;
+
+  /* Grid */
+  --container-max: 1440px;
+  --rail-width: 36px;
+  --border-width: 1px;
+
+  /* Breakpoints (values only; no reflow behavior consumes these yet) */
+  --bp-tablet: 768px;
+  --bp-mobile: 480px;
+}

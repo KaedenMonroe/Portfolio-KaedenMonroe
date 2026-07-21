@@ -1,7 +1,7 @@
 # 0003. Design system and Blueprint Ledger UI foundation
 
 **Date**: 2026-07-20
-**Status**: Proposed
+**Status**: Accepted
 
 ## Summary
 

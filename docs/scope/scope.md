@@ -12,7 +12,7 @@ A one page portfolio site for a third year mechanical engineering student, built
 | 1 | Stack & architecture | Foundation | done |
 | 2 | Coding standards & tooling | Foundation | done |
 | 3 | Content model | Foundation | done |
-| 4 | Design system & Blueprint Ledger UI foundation | Foundation | in-progress |
+| 4 | Design system & Blueprint Ledger UI foundation | Foundation | done |
 | 5 | Walking skeleton | Skeleton | planned |
 | 6 | Blueprint Ledger portfolio page | Slice 1 | planned |
 | 7 | Responsive layout | Slice 2 | planned |
@@ -49,18 +49,18 @@ spec [0002](../specs/0002-content-model/index.md) · code in `src/content.config
 - [x] Verify it: `/check verify content model`
 - [x] Test it: `/test content model`
 
-### 4. Design system & Blueprint Ledger UI foundation
+### 4. Design system & Blueprint Ledger UI foundation (done)
 Capture the Blueprint Ledger visual language from the design brainstorm (grid rail, ledger rows, control loop diagram style, type and color tokens, corner marks) into a design spec, plus the base components every section reuses (nav, section block, ledger row, expand and collapse control).
 **Done when:** `design.md` covers type, color, spacing, grid, and components; base components handle focus and keyboard; the result matches the 1a Blueprint Ledger concept.
-spec [0003](../specs/0003-design-system-blueprint-ledger/index.md)
+spec [0003](../specs/0003-design-system-blueprint-ledger/index.md) · code in `design.md`, `src/styles/tokens.css`, `src/styles/global.css`, `src/layouts/BaseLayout.astro`, `src/components/{GridRailShell,NavBar,SectionBlock,LedgerRow}.astro`, `public/fonts/ibm-plex-mono/`
 - [x] Design it (spec): `/architect design system & Blueprint Ledger UI foundation`
-- [ ] Build it: `/develop design system & Blueprint Ledger UI foundation`
-  - [ ] Design tokens (color, type, spacing, grid, breakpoints) and self hosted IBM Plex Mono set up (AC-1, AC-2, AC-6, AC-8, AC-9)
-  - [ ] Grid rail shell and nav bar built, including CSS only scroll highlighting (AC-3, AC-7)
-  - [ ] Section block and ledger row built, ledger row on native details/summary with independent open state (AC-3, AC-4, AC-5)
-  - [ ] Visual check against the mockup and an automated contrast check pass (AC-2, AC-3)
-- [ ] Verify it: `/check verify design system & Blueprint Ledger UI foundation`
-- [ ] Test it: `/test design system & Blueprint Ledger UI foundation`
+- [x] Build it: `/develop design system & Blueprint Ledger UI foundation`
+  - [x] Design tokens (color, type, spacing, grid, breakpoints) and self hosted IBM Plex Mono set up (AC-1, AC-2, AC-6, AC-8, AC-9)
+  - [x] Grid rail shell and nav bar built, including CSS only scroll highlighting (AC-3, AC-7)
+  - [x] Section block and ledger row built, ledger row on native details/summary with independent open state (AC-3, AC-4, AC-5)
+  - [x] Visual check against the mockup and an automated contrast check pass (AC-2, AC-3)
+- [x] Verify it: `/check verify design system & Blueprint Ledger UI foundation`
+- [x] Test it: `/test design system & Blueprint Ledger UI foundation`
 
 ### 5. Walking skeleton
 A thin vertical slice proving the pipeline end to end: the scaffolded site renders the nav bar and hero shell using the design system, and deploys live.

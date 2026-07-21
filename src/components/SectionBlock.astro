@@ -1,0 +1,35 @@
+---
+interface Props {
+  eyebrow: string;
+  id?: string;
+}
+
+const { eyebrow, id } = Astro.props;
+const slug =
+  id ??
+  eyebrow
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+const eyebrowId = `${slug}-eyebrow`;
+---
+
+<section id={id} class="section-block" aria-labelledby={eyebrowId}>
+  <h2 id={eyebrowId} class="section-block__eyebrow">{eyebrow}</h2>
+  <div class="section-block__content">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section-block {
+    padding: var(--space-40) var(--space-44);
+  }
+
+  .section-block__eyebrow {
+    margin: 0 0 var(--space-14);
+    font: 500 var(--text-sm) var(--font-mono);
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+</style>

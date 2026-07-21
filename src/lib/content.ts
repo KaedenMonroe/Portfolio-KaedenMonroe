@@ -19,6 +19,7 @@ export const getProfile = async (): Promise<Profile> => {
 export type Project = CollectionEntry<'projects'>['data'] & {
   slug: string;
   tag: string;
+  detail: string;
   Content: RenderedContent;
 };
 
@@ -31,6 +32,7 @@ export const getProjects = async (): Promise<Project[]> => {
         ...entry.data,
         slug: entry.id,
         tag: `IDX ${String(index + 1).padStart(2, '0')}`,
+        detail: ('body' in entry && typeof entry.body === 'string' ? entry.body : '').trim(),
         Content,
       };
     })

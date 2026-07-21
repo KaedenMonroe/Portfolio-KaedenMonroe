@@ -29,7 +29,7 @@ const profileEntry = (overrides: Record<string, unknown> = {}) =>
     },
   }) as unknown as CollectionEntry<'profile'>;
 
-const projectEntry = (id: string, title: string) =>
+const projectEntry = (id: string, title: string, body?: string) =>
   ({
     id,
     data: {
@@ -37,6 +37,7 @@ const projectEntry = (id: string, title: string) =>
       subtitle: `${title} subtitle`,
       image: '/images/projects/placeholder.svg',
     },
+    ...(body !== undefined ? { body } : {}),
   }) as unknown as CollectionEntry<'projects'>;
 
 beforeEach(() => {
@@ -110,6 +111,31 @@ describe('getProjects', () => {
     const projects = await getProjects();
 
     expect(projects).toEqual([]);
+  });
+
+  it('derives detail from the entry raw markdown body, trimmed of surrounding whitespace', async () => {
+    // spec 0003 support: feeds LedgerRow's `detail: string` prop (AC-3)
+    getCollection.mockResolvedValue([
+      projectEntry(
+        'autonomous-ground-platform',
+        'Autonomous Ground Platform',
+        '\n  Designed and machined a 4-wheel skid-steer chassis.  \n'
+      ),
+    ]);
+    render.mockResolvedValue(fakeContent);
+
+    const [project] = await getProjects();
+
+    expect(project.detail).toBe('Designed and machined a 4-wheel skid-steer chassis.');
+  });
+
+  it('returns an empty detail string rather than throwing when an entry has no body', async () => {
+    getCollection.mockResolvedValue([projectEntry('quadrotor-prototype', 'Quadrotor Prototype')]);
+    render.mockResolvedValue(fakeContent);
+
+    const [project] = await getProjects();
+
+    expect(project.detail).toBe('');
   });
 });
 

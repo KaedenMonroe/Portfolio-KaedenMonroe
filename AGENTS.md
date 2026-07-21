@@ -40,8 +40,11 @@ Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`, promoted to `docs/s
 - Type strictness: strict TypeScript, no `any`.
 - Conventional commit messages (`feat:`, `fix:`, `chore:`).
 - Lint and format with ESLint + Prettier (`eslint-plugin-astro` for `.astro` files); lint and format run on staged files before every commit via husky + lint-staged. Typecheck and build are not part of the pre-commit hook, they run in CI.
-- Test suite: Vitest, added where a feature's complexity warrants it (not every feature); otherwise `astro check` (typecheck) and manual `/check verify` remain the gate, matching the scope's lean/medium weight profile.
+- Test suite: Vitest, added where a feature's complexity warrants it (not every feature); otherwise `astro check` (typecheck) and manual `/check verify` remain the gate, matching the scope's lean/medium weight profile. Astro components (`.astro` files) cannot be rendered by the current Vitest setup (no Astro aware Vite config wired in); their runtime behavior is proven by `/check verify` instead.
 - CI: a basic GitHub Actions workflow on push (lint, format check, typecheck, build).
+- Design system: build all UI to `design.md` (art direction and the build mandate); token values live in `src/styles/tokens.css`, shared resets and the `.chip` utility in `src/styles/global.css`.
+- Self hosted fonts: web font files are downloaded once into `public/fonts/<family>/` and loaded via `@font-face` with `font-display: swap` in `src/styles/tokens.css`, never fetched from a third party host like fonts.googleapis.com.
+- Disclosure pattern: expand and collapse UI (e.g. the ledger row) uses the native `<details>`/`<summary>` element, not a custom JS/ARIA widget.
 
 ## Agent skills
 

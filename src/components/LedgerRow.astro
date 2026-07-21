@@ -1,0 +1,161 @@
+---
+interface Props {
+  tag: string;
+  title: string;
+  subtitle: string;
+  detail: string;
+  thumbnail?: string;
+  image?: string;
+}
+
+const { tag, title, subtitle, detail, thumbnail, image } = Astro.props;
+---
+
+<details class="ledger-row">
+  <summary class="ledger-row__summary">
+    <span class="ledger-row__tag" aria-hidden="true">{tag}</span>
+    {
+      thumbnail ? (
+        <img class="ledger-row__thumb" src={thumbnail} alt="" width="76" height="52" />
+      ) : (
+        <span class="ledger-row__thumb ledger-row__thumb--placeholder" aria-hidden="true" />
+      )
+    }
+    <span class="ledger-row__heading">
+      <span class="ledger-row__title">{title}</span>
+      <span class="ledger-row__subtitle">{subtitle}</span>
+    </span>
+    <span class="ledger-row__toggle">
+      <span class="ledger-row__toggle-label ledger-row__toggle-label--closed">EXPAND +</span>
+      <span class="ledger-row__toggle-label ledger-row__toggle-label--open">CLOSE −</span>
+    </span>
+  </summary>
+  <div class="ledger-row__detail">
+    <p class="ledger-row__detail-text">{detail}</p>
+    {
+      image ? (
+        <img class="ledger-row__detail-image" src={image} alt={`${title} project photo`} />
+      ) : (
+        <div
+          class="ledger-row__detail-image ledger-row__detail-image--placeholder"
+          aria-hidden="true"
+        >
+          <span>PROJECT PHOTO</span>
+        </div>
+      )
+    }
+  </div>
+</details>
+
+<style>
+  .ledger-row {
+    border-block-start: var(--border-width) solid var(--border);
+  }
+
+  .ledger-row__summary {
+    display: grid;
+    grid-template-columns: 100px 180px 1fr 110px;
+    align-items: center;
+    padding: var(--space-22) var(--space-44);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .ledger-row__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .ledger-row__summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+
+  .ledger-row__tag {
+    font: 500 var(--text-sm) var(--font-mono);
+    color: var(--ink-faint);
+  }
+
+  .ledger-row__thumb {
+    width: 76px;
+    height: 52px;
+    border: var(--border-width) solid var(--border);
+    object-fit: cover;
+  }
+
+  .ledger-row__thumb--placeholder {
+    background: repeating-linear-gradient(
+      135deg,
+      var(--placeholder-a),
+      var(--placeholder-a) 6px,
+      var(--placeholder-b) 6px,
+      var(--placeholder-b) 12px
+    );
+  }
+
+  .ledger-row__heading {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ledger-row__title {
+    font: 600 var(--text-2xl) var(--font-sans);
+    color: var(--ink);
+  }
+
+  .ledger-row__subtitle {
+    font: 400 var(--text-md) var(--font-sans);
+    color: var(--ink-muted);
+  }
+
+  .ledger-row__toggle {
+    font: 500 var(--text-sm) var(--font-mono);
+    color: var(--accent);
+    text-align: end;
+  }
+
+  .ledger-row__toggle-label--open {
+    display: none;
+  }
+
+  .ledger-row[open] .ledger-row__toggle-label--closed {
+    display: none;
+  }
+
+  .ledger-row[open] .ledger-row__toggle-label--open {
+    display: inline;
+  }
+
+  .ledger-row__detail {
+    padding: 0 var(--space-44) var(--space-28);
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: var(--space-28);
+  }
+
+  .ledger-row__detail-text {
+    margin: 0;
+    font: 400 var(--text-lg) var(--font-sans);
+    line-height: 1.7;
+    color: var(--ink-body);
+  }
+
+  .ledger-row__detail-image {
+    height: 180px;
+    border: var(--border-width) solid var(--border);
+  }
+
+  .ledger-row__detail-image--placeholder {
+    background: repeating-linear-gradient(
+      135deg,
+      var(--placeholder-a),
+      var(--placeholder-a) 8px,
+      var(--placeholder-b) 8px,
+      var(--placeholder-b) 16px
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font: 500 var(--text-xs) var(--font-mono);
+    color: var(--ink-faint);
+  }
+</style>
