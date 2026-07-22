@@ -14,7 +14,7 @@ A one page portfolio site for a third year mechanical engineering student, built
 | 3 | Content model | Foundation | done |
 | 4 | Design system & Blueprint Ledger UI foundation | Foundation | done |
 | 5 | Walking skeleton | Skeleton | done |
-| 6 | Blueprint Ledger portfolio page | Slice 1 | in-progress |
+| 6 | Blueprint Ledger portfolio page | Slice 1 | done |
 | 7 | Responsive layout | Slice 2 | planned |
 | 8 | SEO & social metadata | Slice 3 | planned |
 | 9 | Real project content | Deferred | planned |
@@ -83,6 +83,8 @@ code in `src/pages/index.astro` (hero grid, telemetry meta row, footer wiring), 
   - [x] Hero control loop diagram built as a static SVG (the "make it live/interactive" item is explicitly deferred in scope item 9), tokenized to the design system's ink/muted/faint palette rather than the mockup's raw accent blue, with `title`/`desc` for screen readers
   - [x] Hero FIG telemetry row added as a `<dl>` of sample values, honestly labeled "(sample log)" since there is no live data source
   - [x] Footer built (copyright, email/LinkedIn/GitHub links, conditional blog link) and wired to the existing `Profile` content; the résumé link was already live in the nav bar
+- [x] Verify it: `/check verify blueprint ledger portfolio page` (headless HTTP check for render/wiring behaviors; row expand/collapse confirmed manually since no browser tool was available this session)
+- [x] Test it: `/test blueprint ledger portfolio page` (no automated tests apply: all three changed files are `.astro`, unrenderable by the current Vitest setup per `AGENTS.md`; existing suite, 22 tests, still passes; runtime already proven by `/check verify`)
   - [x] Typecheck, lint, and build pass; token discipline pass (no hardcoded hex/px) run on the new files
 
 ## Slice 2: Grow the usable surface
