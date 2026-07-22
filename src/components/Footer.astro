@@ -59,4 +59,18 @@ const year = new Date().getFullYear();
   .footer__link:hover {
     color: var(--accent-hover);
   }
+
+  /* Tablet and mobile mirror --bp-tablet/--bp-mobile (768px/480px), see tokens.css. */
+  @media (max-width: 768px) {
+    .footer {
+      padding: var(--space-20) var(--space-28);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .footer {
+      padding: var(--space-16) var(--space-20);
+      gap: var(--space-14);
+    }
+  }
 </style>

@@ -39,4 +39,14 @@ const railMarks = ['01', '02', '03', '04', '05'];
   .grid-rail-shell__content {
     min-width: 0;
   }
+
+  @media (max-width: 768px) {
+    .grid-rail-shell {
+      grid-template-columns: 1fr;
+    }
+
+    .grid-rail-shell__rail {
+      display: none;
+    }
+  }
 </style>

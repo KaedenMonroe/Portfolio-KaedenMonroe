@@ -33,4 +33,17 @@ const eyebrowId = `${slug}-eyebrow`;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
+
+  /* Tablet and mobile mirror --bp-tablet/--bp-mobile (768px/480px), see tokens.css. */
+  @media (max-width: 768px) {
+    .section-block {
+      padding: var(--space-28) var(--space-28);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .section-block {
+      padding: var(--space-20) var(--space-16);
+    }
+  }
 </style>

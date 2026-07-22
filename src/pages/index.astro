@@ -171,6 +171,44 @@ const navLinks = [
     flex-wrap: wrap;
     gap: var(--space-8);
   }
+
+  /* Tablet mirrors --bp-tablet (768px), see tokens.css: the hero and the
+     about/skills row drop from two columns to one, and their dividing
+     hairline border moves with them. */
+  @media (max-width: 768px) {
+    .hero__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero__grid :global(.section-block) {
+      border-inline-end: none;
+    }
+
+    .hero__meta {
+      padding: var(--space-10) var(--space-28) var(--space-14);
+    }
+
+    .about-skills-row {
+      grid-template-columns: 1fr;
+    }
+
+    .about-skills-row :global(.section-block:first-child) {
+      border-inline-end: none;
+      border-block-end: var(--border-width) solid var(--border);
+    }
+  }
+
+  /* Mobile mirrors --bp-mobile (480px), see tokens.css: the headline steps
+     down a size so it doesn't wrap into a wall of text on a narrow phone. */
+  @media (max-width: 480px) {
+    .hero__headline {
+      font-size: var(--text-2xl);
+    }
+
+    .hero__meta {
+      padding: var(--space-10) var(--space-16) var(--space-14);
+    }
+  }
 </style>
 
 <style is:global>

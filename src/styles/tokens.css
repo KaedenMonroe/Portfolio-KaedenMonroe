@@ -66,7 +66,10 @@
   --rail-width: 36px;
   --border-width: 1px;
 
-  /* Breakpoints (values only; no reflow behavior consumes these yet) */
+  /* Breakpoints. A media query condition can't read a custom property, so
+     these two values are mirrored as literals in each component's
+     @media (max-width: 768px / 480px) rules; this pair is the one place
+     they're named. */
   --bp-tablet: 768px;
   --bp-mobile: 480px;
 }

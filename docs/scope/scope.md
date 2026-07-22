@@ -15,7 +15,7 @@ A one page portfolio site for a third year mechanical engineering student, built
 | 4 | Design system & Blueprint Ledger UI foundation | Foundation | done |
 | 5 | Walking skeleton | Skeleton | done |
 | 6 | Blueprint Ledger portfolio page | Slice 1 | done |
-| 7 | Responsive layout | Slice 2 | planned |
+| 7 | Responsive layout | Slice 2 | done |
 | 8 | SEO & social metadata | Slice 3 | planned |
 | 9 | Real project content | Deferred | planned |
 
@@ -89,10 +89,16 @@ code in `src/pages/index.astro` (hero grid, telemetry meta row, footer wiring), 
 
 ## Slice 2: Grow the usable surface
 
-### 7. Responsive layout
+### 7. Responsive layout (done)
 Adapt the Blueprint Ledger layout for tablet and mobile viewports, since recruiters and hiring managers may open the link on a phone.
 **Done when:** the layout reflows cleanly at common breakpoints (mobile, tablet); the nav collapses appropriately; the grid rail adapts or hides; no horizontal scroll at any width.
-- [ ] Build it: `/develop responsive layout`
+code in `src/styles/tokens.css`, `src/components/{GridRailShell,NavBar,SectionBlock,LedgerRow,Footer}.astro`, `src/pages/index.astro`
+- [x] Build it: `/develop responsive layout`
+  - [x] Grid rail hides and the nav collapses into a native `<details>`/`<summary>` menu (matching the ledger row's disclosure pattern) at the tablet breakpoint (768px)
+  - [x] Hero, about/skills row, and ledger rows reflow at tablet (768px) and mobile (480px), the ledger row switching to a stacked two by two layout at mobile
+  - [x] No breakpoint introduces horizontal scroll (measured via `document.documentElement.scrollWidth` at 1440/768/390/375px); typecheck, lint, format, tests, and build all pass
+- [x] Verify it: `/check verify responsive layout`
+- [x] Test it: `/test responsive layout` (no automated tests apply: all six changed files are `.astro`, unrenderable by the current Vitest setup per `AGENTS.md`; existing suite, 22 tests, still passes; runtime already proven by `/check verify`)
 
 ## Slice 3: Discoverability
 

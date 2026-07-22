@@ -158,4 +158,67 @@ const { tag, title, subtitle, detail, thumbnail, image } = Astro.props;
     font: 500 var(--text-xs) var(--font-mono);
     color: var(--ink-faint);
   }
+
+  /* Tablet mirrors --bp-tablet (768px), see tokens.css: the fixed columns
+     and thumbnail shrink, everything stays in one row. */
+  @media (max-width: 768px) {
+    .ledger-row__summary {
+      grid-template-columns: 64px 110px 1fr 90px;
+      column-gap: var(--space-14);
+      padding: var(--space-22) var(--space-28);
+    }
+
+    .ledger-row__thumb {
+      width: 56px;
+      height: 38px;
+    }
+
+    .ledger-row__detail {
+      padding: 0 var(--space-28) var(--space-28);
+    }
+  }
+
+  /* Mobile mirrors --bp-mobile (480px), see tokens.css: the summary row
+     switches from a single row to a two by two block (thumbnail beside the
+     heading, tag and toggle below), and the detail image drops under the
+     text instead of sitting beside it. */
+  @media (max-width: 480px) {
+    .ledger-row__summary {
+      grid-template-columns: 48px 1fr;
+      grid-template-areas:
+        'thumb heading'
+        'tag toggle';
+      column-gap: var(--space-14);
+      row-gap: var(--space-8);
+      padding: var(--space-16) var(--space-20);
+    }
+
+    .ledger-row__tag {
+      grid-area: tag;
+    }
+
+    .ledger-row__thumb {
+      grid-area: thumb;
+      width: 48px;
+      height: 32px;
+    }
+
+    .ledger-row__heading {
+      grid-area: heading;
+    }
+
+    .ledger-row__toggle {
+      grid-area: toggle;
+      text-align: end;
+    }
+
+    .ledger-row__detail {
+      grid-template-columns: 1fr;
+      padding: 0 var(--space-20) var(--space-20);
+    }
+
+    .ledger-row__detail-image {
+      height: 140px;
+    }
+  }
 </style>
