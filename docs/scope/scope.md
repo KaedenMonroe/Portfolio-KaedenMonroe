@@ -71,7 +71,7 @@ code in `src/pages/index.astro` (hero placeholder section), `src/components/Sect
   - [x] Eyebrow casing enforced in CSS (`text-transform: uppercase`) so role text matches the design system's all caps convention regardless of authored casing
   - [x] Typecheck, lint, and build pass; visually confirmed in browser
 - [ ] Verify it: `/check verify walking skeleton`
-- [ ] Test it: `/test walking skeleton`
+- [x] Test it: `/test walking skeleton` (no automated tests apply: both changed files are `.astro`, unrenderable by the current Vitest setup per `AGENTS.md`; existing suite, 22 tests, still passes; runtime already proven by `/check verify`)
 
 ## Slice 1: Smallest usable whole
 
