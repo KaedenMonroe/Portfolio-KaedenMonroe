@@ -13,7 +13,7 @@ A one page portfolio site for a third year mechanical engineering student, built
 | 2 | Coding standards & tooling | Foundation | done |
 | 3 | Content model | Foundation | done |
 | 4 | Design system & Blueprint Ledger UI foundation | Foundation | done |
-| 5 | Walking skeleton | Skeleton | in-progress |
+| 5 | Walking skeleton | Skeleton | done |
 | 6 | Blueprint Ledger portfolio page | Slice 1 | planned |
 | 7 | Responsive layout | Slice 2 | planned |
 | 8 | SEO & social metadata | Slice 3 | planned |
@@ -62,7 +62,7 @@ spec [0003](../specs/0003-design-system-blueprint-ledger/index.md) · code in `d
 - [x] Verify it: `/check verify design system & Blueprint Ledger UI foundation`
 - [x] Test it: `/test design system & Blueprint Ledger UI foundation`
 
-### 5. Walking skeleton
+### 5. Walking skeleton (done)
 A thin vertical slice proving the pipeline end to end: the scaffolded site renders the nav bar and hero shell using the design system, and deploys live.
 **Done when:** the site deploys to a public URL showing the nav bar and hero placeholder, styled per the design system.
 code in `src/pages/index.astro` (hero placeholder section), `src/components/SectionBlock.astro`
@@ -70,7 +70,7 @@ code in `src/pages/index.astro` (hero placeholder section), `src/components/Sect
   - [x] Hero placeholder built from existing profile content (role as eyebrow, headline, subtext), reusing `SectionBlock`; nav bar was already wired in feature 4
   - [x] Eyebrow casing enforced in CSS (`text-transform: uppercase`) so role text matches the design system's all caps convention regardless of authored casing
   - [x] Typecheck, lint, and build pass; visually confirmed in browser
-- [ ] Verify it: `/check verify walking skeleton`
+- [x] Verify it: `/check verify walking skeleton`
 - [x] Test it: `/test walking skeleton` (no automated tests apply: both changed files are `.astro`, unrenderable by the current Vitest setup per `AGENTS.md`; existing suite, 22 tests, still passes; runtime already proven by `/check verify`)
 
 ## Slice 1: Smallest usable whole
