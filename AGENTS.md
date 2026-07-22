@@ -4,10 +4,10 @@
 
 - **Language / Runtime**: TypeScript (strict mode, `astro/tsconfigs/strict`), Node >=22.12.0
 - **Framework**: Astro 7 (static site generator, ships zero JS by default)
-- **Key dependencies**: astro, @astrojs/check, netlify-cli
+- **Key dependencies**: astro, @astrojs/check, @astrojs/sitemap, netlify-cli
 - **Styling**: Plain CSS with custom properties (design tokens), no CSS framework
 - **Package manager**: npm
-- **Hosting**: Netlify (free tier, automatic preview links per branch)
+- **Hosting**: Netlify (free tier, automatic preview links per branch); production URL set via `site` in `astro.config.mjs` (currently `https://kaeden-monroe-portfolio.netlify.app/`, a Netlify subdomain pending a custom domain, spec 0001)
 
 ## Build approach
 
@@ -45,6 +45,7 @@ Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`, promoted to `docs/s
 - Design system: build all UI to `design.md` (art direction and the build mandate); token values live in `src/styles/tokens.css`, shared resets and the `.chip` utility in `src/styles/global.css`.
 - Self hosted fonts: web font files are downloaded once into `public/fonts/<family>/` and loaded via `@font-face` with `font-display: swap` in `src/styles/tokens.css`, never fetched from a third party host like fonts.googleapis.com.
 - Disclosure pattern: expand and collapse UI (e.g. the ledger row) uses the native `<details>`/`<summary>` element, not a custom JS/ARIA widget.
+- Social share image: the Open Graph/Twitter card is a hand authored static asset (`public/images/og-card.svg`, rasterized once to `og-card.png`, 1200x630), the same pattern as the hero diagram (spec 0003); regenerate manually if `profile.name`, `profile.role`, or the design tokens change, no build time image generation.
 
 ## Agent skills
 

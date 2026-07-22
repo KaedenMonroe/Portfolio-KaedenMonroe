@@ -23,6 +23,7 @@ describe('profile collection schema', () => {
     role: 'Mechanical Engineering — Systems',
     heroHeadline: 'Building the hardware that thinks for itself.',
     heroSubtext: 'Third-year ME student prototyping mobile robotics.',
+    seoDescription: "Kaeden Monroe's portfolio: a third-year ME student building mobile robotics.",
     resumeUrl: 'https://example.com/resume.pdf',
     email: 'someone@example.com',
     linkedinUrl: 'https://www.linkedin.com/in/someone',
@@ -55,6 +56,21 @@ describe('profile collection schema', () => {
     // AC-1
     const result = profileSchema.safeParse({ ...validProfile, email: undefined });
     expect(result.success).toBe(false);
+  });
+
+  it('rejects a profile missing the dedicated seoDescription field', () => {
+    // spec 0004 AC-1: meta description is sourced from a dedicated SEO description, not heroSubtext
+    const result = profileSchema.safeParse({ ...validProfile, seoDescription: undefined });
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts a seoDescription distinct from heroSubtext', () => {
+    // spec 0004 AC-1
+    const result = profileSchema.safeParse(validProfile);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.seoDescription).not.toBe(result.data.heroSubtext);
+    }
   });
 
   it('rejects a malformed email', () => {

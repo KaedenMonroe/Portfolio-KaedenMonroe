@@ -21,7 +21,11 @@ const navLinks = [
 ];
 ---
 
-<BaseLayout title={`${profile.name} — ${profile.role}`} description={profile.heroSubtext}>
+<BaseLayout
+  title={`${profile.name} — ${profile.role}`}
+  description={profile.seoDescription}
+  profile={profile}
+>
   <GridRailShell>
     <NavBar name={profile.name} links={navLinks} />
     <main id="main-content">

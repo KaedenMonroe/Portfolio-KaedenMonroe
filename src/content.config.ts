@@ -9,6 +9,7 @@ const profile = defineCollection({
     role: z.string(),
     heroHeadline: z.string(),
     heroSubtext: z.string(),
+    seoDescription: z.string(),
     resumeUrl: z.url(),
     email: z.email(),
     linkedinUrl: z.url(),

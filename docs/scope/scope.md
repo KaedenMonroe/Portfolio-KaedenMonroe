@@ -16,7 +16,7 @@ A one page portfolio site for a third year mechanical engineering student, built
 | 5 | Walking skeleton | Skeleton | done |
 | 6 | Blueprint Ledger portfolio page | Slice 1 | done |
 | 7 | Responsive layout | Slice 2 | done |
-| 8 | SEO & social metadata | Slice 3 | planned |
+| 8 | SEO & social metadata | Slice 3 | done |
 | 9 | Real project content | Deferred | planned |
 
 ## Foundations
@@ -102,10 +102,19 @@ code in `src/styles/tokens.css`, `src/components/{GridRailShell,NavBar,SectionBl
 
 ## Slice 3: Discoverability
 
-### 8. SEO & social metadata
+### 8. SEO & social metadata (done)
 Add meta tags, Open Graph and social card data, and a sitemap, so the portfolio is discoverable and shares well when linked from a résumé or application.
 **Done when:** the page has title and description meta tags and Open Graph tags; a social preview card renders correctly when the link is shared; `sitemap.xml` exists.
-- [ ] Build it: `/develop seo & social metadata`
+spec [0004](../specs/0004-seo-social-metadata/index.md)
+- [x] Design it (spec): `/architect seo & social metadata`
+- [x] Build it: `/develop seo & social metadata`
+  - [x] Content and config foundations: dedicated SEO description field, production URL set in `astro.config.mjs` (AC-1, AC-6)
+  - [x] Share card image hand authored from `design.md`'s tokens and committed (AC-3)
+  - [x] Page head wired: canonical link, Open Graph and Twitter tags, Person JSON-LD (AC-1, AC-2, AC-3, AC-4)
+  - [x] Sitemap and robots.txt added (AC-5)
+  - code in `src/layouts/BaseLayout.astro`, `src/content.config.ts`, `content/profile.md`, `astro.config.mjs`, `public/images/og-card.{svg,png}`, `public/robots.txt`
+- [x] Verify it: `/check verify seo & social metadata`
+- [x] Test it: `/test seo & social metadata`
 
 ## Deferred
 Out of scope for the current build pass, kept so the plan stays honest.
