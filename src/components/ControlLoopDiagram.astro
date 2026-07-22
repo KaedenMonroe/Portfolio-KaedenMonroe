@@ -1,0 +1,152 @@
+---
+
+---
+
+<svg
+  class="control-loop"
+  viewBox="0 0 460 300"
+  role="img"
+  aria-labelledby="control-loop-title control-loop-desc"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title id="control-loop-title">Control loop diagram</title>
+  <desc id="control-loop-desc">
+    A block diagram of a feedback control loop: a reference input feeds a summing junction, through
+    a path planner, flight controller, and actuators to the platform dynamics; IMU fusion and GPS or
+    vision sensing feed the state estimate back into the summing junction, closing the loop.
+  </desc>
+  <defs>
+    <marker
+      id="control-loop-arrow"
+      markerWidth="7"
+      markerHeight="7"
+      refX="6"
+      refY="3.5"
+      orient="auto"
+    >
+      <path d="M0,0 L7,3.5 L0,7 z" class="control-loop__arrowhead"></path>
+    </marker>
+  </defs>
+  <g class="control-loop__labels">
+    <rect
+      x="8"
+      y="128"
+      width="58"
+      height="34"
+      class="control-loop__box control-loop__box--peripheral"></rect>
+    <text x="14" y="148">R(s)</text>
+
+    <circle cx="104" cy="145" r="14" class="control-loop__box"></circle>
+    <text x="99" y="149" class="control-loop__sum">Σ</text>
+
+    <rect x="146" y="118" width="86" height="34" class="control-loop__box"></rect>
+    <text x="152" y="132">PATH</text>
+    <text x="152" y="143">PLANNER</text>
+
+    <rect x="256" y="118" width="86" height="34" class="control-loop__box"></rect>
+    <text x="262" y="132">FLIGHT</text>
+    <text x="262" y="143">CTRL Gc(s)</text>
+
+    <rect x="366" y="118" width="86" height="34" class="control-loop__box"></rect>
+    <text x="372" y="132">ESC /</text>
+    <text x="372" y="143">ACTUATORS</text>
+
+    <rect x="256" y="196" width="86" height="34" class="control-loop__box"></rect>
+    <text x="262" y="210">PLATFORM</text>
+    <text x="262" y="221">DYN. Gp(s)</text>
+
+    <rect x="146" y="196" width="86" height="34" class="control-loop__box"></rect>
+    <text x="152" y="210">IMU /</text>
+    <text x="152" y="221">FUSION</text>
+
+    <rect
+      x="36"
+      y="196"
+      width="80"
+      height="34"
+      class="control-loop__box control-loop__box--peripheral"></rect>
+    <text x="42" y="210">GPS /</text>
+    <text x="42" y="221">VISION</text>
+
+    <rect
+      x="366"
+      y="60"
+      width="86"
+      height="30"
+      class="control-loop__box control-loop__box--peripheral"></rect>
+    <text x="372" y="79">GROUND</text>
+    <text x="372" y="88" class="control-loop__label--tiny">STATION</text>
+
+    <text x="20" y="264">Y(s) — STATE OUT</text>
+
+    <g class="control-loop__lines">
+      <line x1="66" y1="145" x2="90" y2="145" marker-end="url(#control-loop-arrow)"></line>
+      <line x1="118" y1="145" x2="146" y2="135" marker-end="url(#control-loop-arrow)"></line>
+      <line x1="232" y1="135" x2="256" y2="135" marker-end="url(#control-loop-arrow)"></line>
+      <line x1="342" y1="135" x2="366" y2="135" marker-end="url(#control-loop-arrow)"></line>
+      <line x1="409" y1="152" x2="299" y2="196" marker-end="url(#control-loop-arrow)"></line>
+      <line x1="256" y1="213" x2="232" y2="213" marker-end="url(#control-loop-arrow)"></line>
+      <line x1="146" y1="213" x2="116" y2="213" marker-end="url(#control-loop-arrow)"></line>
+      <line
+        x1="76"
+        y1="196"
+        x2="104"
+        y2="159"
+        class="control-loop__line--feedback"
+        marker-end="url(#control-loop-arrow)"></line>
+      <line x1="409" y1="90" x2="409" y2="118" class="control-loop__line--dashed"></line>
+      <line x1="299" y1="230" x2="235" y2="255"></line>
+      <line x1="235" y1="255" x2="20" y2="255"></line>
+    </g>
+  </g>
+</svg>
+
+<style>
+  .control-loop {
+    width: 100%;
+    height: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+  }
+
+  .control-loop__box {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 1;
+  }
+
+  .control-loop__box--peripheral {
+    stroke: var(--ink-muted);
+  }
+
+  .control-loop__labels text {
+    fill: var(--ink-muted);
+  }
+
+  .control-loop__sum {
+    fill: var(--ink);
+    font-size: var(--text-sm);
+  }
+
+  .control-loop__label--tiny {
+    font-size: var(--text-2xs);
+  }
+
+  .control-loop__lines line {
+    stroke: var(--ink-muted);
+    stroke-width: 1;
+  }
+
+  .control-loop__line--feedback {
+    stroke-dasharray: 3 2;
+  }
+
+  .control-loop__line--dashed {
+    stroke: var(--ink-faint);
+    stroke-dasharray: 2 2;
+  }
+
+  .control-loop__arrowhead {
+    fill: var(--ink-muted);
+  }
+</style>

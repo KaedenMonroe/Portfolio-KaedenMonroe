@@ -4,6 +4,8 @@ import GridRailShell from '../components/GridRailShell.astro';
 import NavBar from '../components/NavBar.astro';
 import SectionBlock from '../components/SectionBlock.astro';
 import LedgerRow from '../components/LedgerRow.astro';
+import ControlLoopDiagram from '../components/ControlLoopDiagram.astro';
+import Footer from '../components/Footer.astro';
 import { getProfile, getProjects, getSkillCategories } from '../lib/content';
 
 const profile = await getProfile();
@@ -23,10 +25,34 @@ const navLinks = [
   <GridRailShell>
     <NavBar name={profile.name} links={navLinks} />
     <main id="main-content">
-      <SectionBlock id="hero" eyebrow={profile.role}>
-        <h1 class="hero__headline">{profile.heroHeadline}</h1>
-        <p>{profile.heroSubtext}</p>
-      </SectionBlock>
+      <div id="hero" class="hero">
+        <div class="hero__grid">
+          <SectionBlock eyebrow={profile.role}>
+            <h1 class="hero__headline">{profile.heroHeadline}</h1>
+            <p>{profile.heroSubtext}</p>
+          </SectionBlock>
+          <div class="hero__diagram">
+            <ControlLoopDiagram />
+          </div>
+        </div>
+        <div class="hero__meta">
+          <span class="hero__meta-label">FIG. 01 — CONTROL LOOP, GROUND TEST (sample log)</span>
+          <dl class="hero__telemetry">
+            <div>
+              <dt>IMU</dt>
+              <dd>199.8 Hz</dd>
+            </div>
+            <div>
+              <dt>GAIN MARGIN</dt>
+              <dd>6.4 dB</dd>
+            </div>
+            <div>
+              <dt>BATT</dt>
+              <dd>15.8 V</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
       <div class="about-skills-row">
         <SectionBlock id="about" eyebrow="ABOUT">
           <profile.Content />
@@ -56,12 +82,36 @@ const navLinks = [
         ))
       }
     </main>
+    <Footer
+      copyrightName={profile.copyrightName}
+      email={profile.email}
+      linkedinUrl={profile.linkedinUrl}
+      githubUrl={profile.githubUrl}
+      blogUrl={profile.blogUrl}
+    />
   </GridRailShell>
 </BaseLayout>
 
 <style>
-  :global(#hero) {
+  .hero {
     border-block-end: var(--border-width) solid var(--border);
+  }
+
+  .hero__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-block-end: var(--border-width) solid var(--border-faint);
+  }
+
+  .hero__grid :global(.section-block) {
+    border-inline-end: var(--border-width) solid var(--border-faint);
+  }
+
+  .hero__diagram {
+    padding: var(--space-20) var(--space-40);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .hero__headline {
@@ -69,6 +119,41 @@ const navLinks = [
     max-width: 20ch;
     font: 600 var(--text-3xl) / 1.15 var(--font-sans);
     color: var(--ink);
+  }
+
+  .hero__meta {
+    padding: var(--space-10) var(--space-44) var(--space-14);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-10);
+  }
+
+  .hero__meta-label {
+    font: 500 var(--text-2xs) var(--font-mono);
+    color: var(--ink-muted);
+  }
+
+  .hero__telemetry {
+    margin: 0;
+    display: flex;
+    gap: var(--space-22);
+    font: 500 var(--text-xs) var(--font-mono);
+    color: var(--ink-muted);
+  }
+
+  .hero__telemetry div {
+    display: flex;
+    gap: var(--space-8);
+  }
+
+  .hero__telemetry dt::after {
+    content: ':';
+  }
+
+  .hero__telemetry dd {
+    margin: 0;
   }
 
   .about-skills-row {

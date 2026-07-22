@@ -1,0 +1,62 @@
+---
+interface Props {
+  copyrightName: string;
+  email: string;
+  linkedinUrl: string;
+  githubUrl: string;
+  blogUrl?: string;
+}
+
+const { copyrightName, email, linkedinUrl, githubUrl, blogUrl } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <span class="footer__copyright">© {year} {copyrightName}</span>
+  <nav class="footer__links" aria-label="Footer">
+    {
+      blogUrl && (
+        <a href={blogUrl} class="footer__link" target="_blank" rel="noopener noreferrer">
+          Blog ↗
+        </a>
+      )
+    }
+    <a href={`mailto:${email}`} class="footer__link">Email ↗</a>
+    <a href={linkedinUrl} class="footer__link" target="_blank" rel="noopener noreferrer">
+      LinkedIn ↗
+    </a>
+    <a href={githubUrl} class="footer__link" target="_blank" rel="noopener noreferrer">
+      GitHub ↗
+    </a>
+  </nav>
+</footer>
+
+<style>
+  .footer {
+    border-block-start: var(--border-width) solid var(--border);
+    padding: var(--space-20) var(--space-44);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-10);
+    font: 500 var(--text-xs) var(--font-mono);
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .footer__links {
+    display: flex;
+    gap: var(--space-20);
+  }
+
+  .footer__link {
+    color: var(--ink-muted);
+    transition: color 120ms ease;
+  }
+
+  .footer__link:hover {
+    color: var(--accent-hover);
+  }
+</style>

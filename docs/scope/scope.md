@@ -14,7 +14,7 @@ A one page portfolio site for a third year mechanical engineering student, built
 | 3 | Content model | Foundation | done |
 | 4 | Design system & Blueprint Ledger UI foundation | Foundation | done |
 | 5 | Walking skeleton | Skeleton | done |
-| 6 | Blueprint Ledger portfolio page | Slice 1 | planned |
+| 6 | Blueprint Ledger portfolio page | Slice 1 | in-progress |
 | 7 | Responsive layout | Slice 2 | planned |
 | 8 | SEO & social metadata | Slice 3 | planned |
 | 9 | Real project content | Deferred | planned |
@@ -78,7 +78,12 @@ code in `src/pages/index.astro` (hero placeholder section), `src/components/Sect
 ### 6. Blueprint Ledger portfolio page
 The full single page site: hero with the control loop diagram, about, skills, three ledger style expandable project rows (placeholder content), and a footer with résumé download and contact links. A recruiter can visit and get the whole picture in one scroll.
 **Done when:** hero, about, skills, and three placeholder projects render in the Blueprint Ledger layout; clicking a project row expands and collapses its detail; the résumé download link and contact links (email, LinkedIn, GitHub) work.
-- [ ] Build it: `/develop blueprint ledger portfolio page`
+code in `src/pages/index.astro` (hero grid, telemetry meta row, footer wiring), `src/components/{ControlLoopDiagram,Footer}.astro`
+- [x] Build it: `/develop blueprint ledger portfolio page`
+  - [x] Hero control loop diagram built as a static SVG (the "make it live/interactive" item is explicitly deferred in scope item 9), tokenized to the design system's ink/muted/faint palette rather than the mockup's raw accent blue, with `title`/`desc` for screen readers
+  - [x] Hero FIG telemetry row added as a `<dl>` of sample values, honestly labeled "(sample log)" since there is no live data source
+  - [x] Footer built (copyright, email/LinkedIn/GitHub links, conditional blog link) and wired to the existing `Profile` content; the résumé link was already live in the nav bar
+  - [x] Typecheck, lint, and build pass; token discipline pass (no hardcoded hex/px) run on the new files
 
 ## Slice 2: Grow the usable surface
 
