@@ -38,6 +38,5 @@ This system in particular is deliberately spare, not empty: hairline borders and
 
 ## Responsive & accessibility direction
 
-- Breakpoint tokens (`--bp-tablet: 768px`, `--bp-mobile: 480px`) are defined but no component reflows yet (spec 0003, deferred to the later responsive layout item); don't add ad hoc `@media` reflow rules to these four base components ahead of that item, it would fragment the decision.
 - Every interactive element must show a visible `:focus-visible` ring (2px, `--accent`); `LedgerRow`'s summary and `NavBar`'s links already do, match the same pattern for any new interactive element added later.
 - `prefers-reduced-motion: reduce` is handled once, globally, in `global.css`; new components don't need to repeat it, just avoid motion that ignores the global override.
