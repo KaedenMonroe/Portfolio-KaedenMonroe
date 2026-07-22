@@ -75,7 +75,7 @@ code in `src/pages/index.astro` (hero placeholder section), `src/components/Sect
 
 ## Slice 1: Smallest usable whole
 
-### 6. Blueprint Ledger portfolio page
+### 6. Blueprint Ledger portfolio page (done)
 The full single page site: hero with the control loop diagram, about, skills, three ledger style expandable project rows (placeholder content), and a footer with résumé download and contact links. A recruiter can visit and get the whole picture in one scroll.
 **Done when:** hero, about, skills, and three placeholder projects render in the Blueprint Ledger layout; clicking a project row expands and collapses its detail; the résumé download link and contact links (email, LinkedIn, GitHub) work.
 code in `src/pages/index.astro` (hero grid, telemetry meta row, footer wiring), `src/components/{ControlLoopDiagram,Footer}.astro`
