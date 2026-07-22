@@ -1,7 +1,14 @@
 {
   "name": "kaeden-monroe-portfolio",
-  "type": "module",
   "version": "0.0.1",
+  "description": "Kaeden Monroe's personal portfolio site, built with Astro and deployed on Netlify.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Kaeden Monroe",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KaedenMonroe/Portfolio-KaedenMonroe.git"
+  },
   "engines": {
     "node": ">=22.12.0"
   },

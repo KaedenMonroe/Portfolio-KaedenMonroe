@@ -46,7 +46,7 @@ Build the portfolio as a static Astro site written in TypeScript, styled with pl
 
 ## Follow-up
 
-- [ ] Buy and point a custom domain at Netlify when ready; no stack change needed to do this later.
+- [ ] Point the custom domain at Netlify: `kaedenmonroe.me` is already registered and added as this Netlify project's custom domain (`netlify status` → Project URL), but its DNS still resolves to an old GitHub Pages deployment (no valid HTTPS for this domain until that's fixed). Repoint the domain's DNS records (A/ALIAS or CNAME, per Netlify's custom-domain setup instructions) at Netlify to complete the cutover; no stack change needed.
 - [ ] The content model decision (feature 3) should use Astro Content Collections as the storage mechanism for project, skills, and about data, building directly on this stack choice.
 - [ ] Root `AGENTS.md` does not exist yet. `/audit` (feature 2, coding standards and tooling) should capture this stack, the installed Agent Skills, and the resulting conventions once the scaffold exists.
 - [ ] Connect the official Netlify MCP server (https://github.com/netlify/netlify-mcp) for live access to real deploy and site status; this is a one time config step in your MCP client, after which it is used automatically.
