@@ -1,0 +1,66 @@
+# Kaeden Monroe Portfolio
+
+## Stack
+
+- **Language / Runtime**: TypeScript (strict mode), Node ^24.0.0
+- **Framework**: Astro 7
+- **Key dependencies**: Tailwind CSS, Astro Content Collections, astro:assets, @astrojs/sitemap
+- **Package manager**: pnpm
+
+## Build approach
+
+**Skateboard**: ship the smallest usable whole first, a real visitor could use tomorrow, then grow it release by release.
+
+## Commands
+
+```bash
+pnpm install   # install
+pnpm dev       # dev server
+pnpm build     # build
+# no automated test suite by default (Alpha workflow); see ## Tooling
+```
+
+## Specs
+
+Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`.
+
+## Rules
+
+- Functional style: pure functions, immutable data (`const`, no in place mutation); side effects (Netlify Forms, content loading) pushed to the edges.
+- Prefer plain functions and composition over classes and inheritance.
+- Follow Astro's own project layout: `src/pages`, `src/components`, `src/layouts`, `src/content`, `src/lib`.
+- One consistent naming convention across files, components, and variables.
+- Accessibility baseline: WCAG AA (focus states, alt text, semantic HTML, color contrast).
+- Conventional commit messages (`feat:`, `fix:`, `chore:`, ...).
+- Handle expected failures (e.g. a malformed Content Collection entry) with explicit error returns, not ad hoc try/catch.
+
+## Tooling
+
+- Linting / formatting: ESLint + Prettier (not installed yet; `astro-eslint-parser` + `eslint-plugin-astro` cover `.astro` files).
+- Pre-commit: lint + format + typecheck on every commit (e.g. husky + lint-staged).
+- Testing gate: typecheck + manual `/check verify` only, no dedicated test suite by default (Alpha workflow).
+- CI: not yet; Netlify already rebuilds and deploys on push.
+
+## Git
+
+- integration: on, branch prefix: feat/, commit: per-milestone, worktree: on
+
+## Agent skills
+
+- [tailwind-css](.agents/skills/tailwind-css/): `paulrberg/agent-skills`, Tailwind v4 conventions.
+- [design-tokens](.agents/skills/design-tokens/): `julianoczkowski/designer-skills`, design tokens.
+- [pnpm](.agents/skills/pnpm/): `onmax/nuxt-skills`, pnpm usage.
+- [netlify-deploy](.agents/skills/netlify-deploy/): `netlify/context-and-tools`, Netlify deploy.
+- [accessibility](.agents/skills/accessibility/): `addyosmani/web-quality-skills`, WCAG 2.2 audits (picked via `/decide` over `mastepanoski/claude-skills`, `wshobson/agents`).
+- [eslint-prettier-config](.agents/skills/eslint-prettier-config/): `patricio0312rev/skills`, ESLint + Prettier setup.
+- [astro](.agents/skills/astro/): `astrolicious/agent-skills`, Astro conventions.
+
+Later: the `seo` skill (same `addyosmani/web-quality-skills` bundle) once SEO work starts; Fathom/Umami analytics MCP servers once the analytics feature (item 9) is designed.
+Declined: `giuseppe-trisciuoglio/developer-kit`, `josiahsiegel/claude-plugin-marketplace`, `hairyf/skills`, `jwynia/agent-skills`, `antfu/skills`, `mindrally/skills`, `openai/skills`, `mastepanoski/claude-skills`, `wshobson/agents`.
+MCP servers: astro-docs (connected).
+
+## Context files
+
+<!-- Nested AGENTS.md files are listed here as they are created -->
+
+_Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._

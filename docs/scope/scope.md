@@ -11,7 +11,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 
 | # | Feature | Phase | Status |
 |---|---------|-------|--------|
-| 1 | Stack & architecture | Foundation | planned |
+| 1 | Stack & architecture | Foundation | done |
 | 2 | Coding standards & tooling | Foundation | planned |
 | 3 | Content & data model | Foundation | planned |
 | 4 | Design system & UI foundation | Foundation | planned |
@@ -23,10 +23,12 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 
 ## Foundations
 
-### 1. Stack & architecture · needs a decision
+### 1. Stack & architecture
 Astro is already decided as the framework. This spec picks the rest: content approach (Astro content collections for bio and project entries), hosting/deploy target, font loading strategy for the serif + sans pairing, and image handling for project assets. Nothing else gets built before this is decided.
 **Done when:** the stack is recorded in a spec and an empty Astro scaffold boots locally and passes a build.
-- [ ] Decide the stack (spec): `/architect stack & architecture`
+Spec: [0001](../specs/0001-stack-and-architecture/index.md) · code in `.` (project root)
+- [x] Decide the stack (spec): `/architect stack & architecture`
+- [x] Scaffold from the decision: `/develop stack & architecture`
 
 ### 2. Coding standards & tooling
 Capture conventions, then install lint, format, and pre-commit enforcement from the real scaffolded project.
