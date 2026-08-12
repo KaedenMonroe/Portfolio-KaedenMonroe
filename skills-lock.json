@@ -55,12 +55,6 @@
       "skillPath": "foundation/eslint-prettier-config/SKILL.md",
       "computedHash": "dd1365afc6c06f6c8555d0624669e70c6873057da70a92b045e948329dc1b906"
     },
-    "frontend-design": {
-      "source": "anthropics/claude-code",
-      "sourceType": "github",
-      "skillPath": "plugins/frontend-design/skills/frontend-design/SKILL.md",
-      "computedHash": "3e0be122a3db8206b6d0d6b07cca898b5c75fb9b7b2101abe143fb2851734d2e"
-    },
     "netlify-deploy": {
       "source": "netlify/context-and-tools",
       "sourceType": "github",

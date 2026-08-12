@@ -24,7 +24,7 @@ Build the portfolio as a static Astro site in TypeScript (strict mode), with Ast
 | Rendering / output | Static (prerendered), no adapter installed yet | Netlify Forms covers the future contact form with no server code, so nothing needs an on demand route yet |
 | Content | Astro Content Collections | Zod validated, git versioned frontmatter colocated with the code; matches what the scope foundation already anticipated |
 | Styling | Tailwind CSS | Gives the "deliberate spacing rhythm" design goal a structural token scale instead of relying on hand discipline |
-| Fonts | Astro's built in Fonts API (experimental) | Automates self hosting and preloading for the serif plus sans pairing; flagged as newer with a documented fallback below |
+| Fonts | Astro's built in Fonts API (experimental) | Automates self hosting and preloading; flagged as newer with a documented fallback below. **Revised by [0002](../0002-design-system-ui-foundation/index.md)**: a single sans face (Inter) replaces the serif plus sans pairing originally planned here. The loading strategy itself is unchanged |
 | Images | astro:assets | Built in Sharp based optimization and responsive components, no extra dependency for a modest image count |
 | SEO | @astrojs/sitemap plus a hand built meta/OG component | Keeps discoverability tooling minimal and dependency light |
 | Hosting | Netlify | Git based deploys, generous free tier, and Netlify Forms solves the future contact form for free |

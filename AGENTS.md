@@ -64,6 +64,7 @@ Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`.
 
 Later: the `seo` skill (same `addyosmani/web-quality-skills` bundle) once SEO work starts; Fathom/Umami analytics MCP servers once the analytics feature (item 9) is designed.
 Declined: `giuseppe-trisciuoglio/developer-kit`, `josiahsiegel/claude-plugin-marketplace`, `hairyf/skills`, `jwynia/agent-skills`, `antfu/skills`, `mindrally/skills`, `openai/skills`, `mastepanoski/claude-skills`, `wshobson/agents`.
+Remove once design is finalized and development begins: `brainstorming`, `creative-director`, `design-brief`, `design-consultation`, `design-review`, `plan-design-review`, `reference-design-contract` (all `nexu-io/open-design`). UI-design-stage-only skills; keeping them loaded past that point is unneeded token overhead during build work.
 MCP servers: astro-docs (connected).
 
 ## Context files

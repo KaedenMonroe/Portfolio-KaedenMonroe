@@ -14,7 +14,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 1 | Stack & architecture | Foundation | done |
 | 2 | Coding standards & tooling | Foundation | done |
 | 3 | Content & data model | Foundation | planned |
-| 4 | Design system & UI foundation | Foundation | planned |
+| 4 | Design system & UI foundation | Foundation | in-progress |
 | 5 | Home / bio page | Slice 1 | planned |
 | 6 | Projects page (static listing) | Slice 1 | planned |
 | 7 | Interactive project carousel | Slice 2 | planned |
@@ -42,10 +42,16 @@ The schema every page renders from: project entries (title, subtitle, tags, imag
 **Done when:** the content schema supports the bio page and the projects listing without a breaking change once real content is entered.
 - [ ] Design it (spec): `/architect content & data model`
 
-### 4. Design system & UI foundation · needs a decision
-The serif + sans typography pairing, accent color, and a deliberate spacing/whitespace rhythm (so empty space reads as designed, not unfinished), plus base components (nav, links, buttons, focus states).
-**Done when:** `design.md` covers type/color/spacing/components, and base components handle focus and keyboard states.
-- [ ] Design it (spec): `/architect design system & UI foundation`
+### 4. Design system & UI foundation
+A single restrained sans typeface, a near white background, University of Delaware blue as the one accent, and a deliberate spacing rhythm (so empty space reads as designed, not unfinished), plus base components (nav, links, avatar, project card, focus states). Bio and projects share one scrollable page, not two.
+**Done when:** the token set (color, typography, spacing) and base components are built and pass WCAG AA contrast and keyboard focus checks.
+Spec: [0002](../specs/0002-design-system-ui-foundation/index.md)
+- [x] Design it (spec): `/architect design system & UI foundation`
+- [ ] Build it: `/develop design system & UI foundation`
+  - [ ] Tokens & fonts: Tailwind v4 `@theme` setup, the color/spacing/font tokens, Inter via Astro's Fonts API, WCAG AA contrast verified (AC-1, AC-2, AC-4, AC-6)
+  - [ ] Base components: Avatar, InlineLink, Nav, SectionWrapper, Tag, ProjectCard (AC-3, AC-5)
+  - [ ] Verification pass: keyboard-only focus check, visual check against the Figma wireframe at mobile/tablet/desktop widths (AC-3, AC-5)
+- [ ] Verify it: `/check verify design system & UI foundation`
 
 ## Slice 1: Smallest usable whole
 
