@@ -54,6 +54,13 @@ Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`.
 - [accessibility](.agents/skills/accessibility/): `addyosmani/web-quality-skills`, WCAG 2.2 audits (picked via `/decide` over `mastepanoski/claude-skills`, `wshobson/agents`).
 - [eslint-prettier-config](.agents/skills/eslint-prettier-config/): `patricio0312rev/skills`, ESLint + Prettier setup.
 - [astro](.agents/skills/astro/): `astrolicious/agent-skills`, Astro conventions.
+- [brainstorming](.agents/skills/brainstorming/): `nexu-io/open-design`, turns rough ideas into design alternatives through structured questioning.
+- [creative-director](.agents/skills/creative-director/): `nexu-io/open-design`, creative critique and concepting across ideation methodologies (SIT, TRIZ, SCAMPER).
+- [design-brief](.agents/skills/design-brief/): `nexu-io/open-design`, parses I-Lang design briefs into concrete design specs.
+- [design-consultation](.agents/skills/design-consultation/): `nexu-io/open-design`, builds a design system from scratch with product mockups.
+- [design-review](.agents/skills/design-review/): `nexu-io/open-design`, visual audit and atomic-commit fixes for shipped UI.
+- [plan-design-review](.agents/skills/plan-design-review/): `nexu-io/open-design`, senior-designer style review gate before merging UI work.
+- [reference-design-contract](.agents/skills/reference-design-contract/): `nexu-io/open-design`, turns taste references (screenshots, URLs, notes) into a grounded design.md handoff.
 
 Later: the `seo` skill (same `addyosmani/web-quality-skills` bundle) once SEO work starts; Fathom/Umami analytics MCP servers once the analytics feature (item 9) is designed.
 Declined: `giuseppe-trisciuoglio/developer-kit`, `josiahsiegel/claude-plugin-marketplace`, `hairyf/skills`, `jwynia/agent-skills`, `antfu/skills`, `mindrally/skills`, `openai/skills`, `mastepanoski/claude-skills`, `wshobson/agents`.
