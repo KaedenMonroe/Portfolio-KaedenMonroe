@@ -1,0 +1,12 @@
+dist/
+.astro/
+node_modules/
+pnpm-lock.yaml
+
+# Installed agent skills and their instruction files: vendored, not project source
+.agents/
+.claude/skills/
+
+# Owned surgically by /architect, /scope, and /develop's own spec/scope writes;
+# reformatting prose here fights those skills' single-line edit rules
+docs/
