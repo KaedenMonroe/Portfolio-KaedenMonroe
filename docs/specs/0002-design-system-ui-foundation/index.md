@@ -1,7 +1,7 @@
 # 0002. Design system and UI foundation
 
 **Date**: 2026-08-12
-**Status**: In Progress
+**Status**: Accepted
 
 ## Summary
 

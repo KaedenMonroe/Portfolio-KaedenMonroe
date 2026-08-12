@@ -14,7 +14,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 1 | Stack & architecture | Foundation | done |
 | 2 | Coding standards & tooling | Foundation | done |
 | 3 | Content & data model | Foundation | planned |
-| 4 | Design system & UI foundation | Foundation | in-progress |
+| 4 | Design system & UI foundation | Foundation | done |
 | 5 | Home / bio page | Slice 1 | planned |
 | 6 | Projects page (static listing) | Slice 1 | planned |
 | 7 | Interactive project carousel | Slice 2 | planned |
@@ -51,7 +51,7 @@ Spec: [0002](../specs/0002-design-system-ui-foundation/index.md) · code in `src
   - [x] Tokens & fonts: Tailwind v4 `@theme` setup, the color/spacing/font tokens, Inter via Astro's Fonts API, WCAG AA contrast verified (AC-1, AC-2, AC-4, AC-6)
   - [x] Base components: Avatar, InlineLink, Nav, SectionWrapper, Tag, ProjectCard (AC-3, AC-5)
   - [x] Verification pass: keyboard-only focus check, visual check against the Figma wireframe at mobile/tablet/desktop widths (AC-3, AC-5)
-- [ ] Verify it: `/check verify design system & UI foundation`
+- [x] Verify it: `/check verify design system & UI foundation`
 
 ## Slice 1: Smallest usable whole
 

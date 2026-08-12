@@ -4,18 +4,18 @@ _Steps derived from spec 0002 acceptance criteria. `/check verify` runs these; `
 
 ## UI / manual
 
-- [ ] Open the built page at desktop, tablet (834px), and mobile (390px) widths → nav, avatar, name, title, and bio render with no horizontal overflow or clipped content at any width → AC-5
-- [ ] Compare the rendered page against the Figma BioPage and ProjectPage frames → nav layout (name left, About/Projects/Resume right), avatar + name + title composition, bio column width, and the project card row proportions visually match → AC-5
-- [ ] Resize a long project title/subtitle to a longer string → ProjectCard wraps the text without breaking the card's image proportions or the row layout → AC-5
-- [ ] Tab through the page from the top with only a keyboard → focus visits About, Projects, Resume (and any in-body link) in visual order, each stop showing a `focus-visible` outline clearly different from the resting and hover state → AC-3
-- [ ] Inspect every text/background pair used on the page (body text, meta text, links) with a contrast checker → each meets 4.5:1 (normal text) or 3:1 (large text/UI) → AC-2
-- [ ] View page source / network tab → only Inter loads (no serif or mono font request), and the font request is same-origin (self-hosted), not a request to fonts.googleapis.com → AC-6
+- [x] Open the built page at desktop, tablet (834px), and mobile (390px) widths → nav, avatar, name, title, and bio render with no horizontal overflow or clipped content at any width → AC-5
+- [x] Compare the rendered page against the Figma BioPage and ProjectPage frames → nav layout (name left, About/Projects/Resume right), avatar + name + title composition, bio column width, and the project card row proportions visually match → AC-5
+- [x] Resize a long project title/subtitle to a longer string → ProjectCard wraps the text without breaking the card's image proportions or the row layout → AC-5
+- [x] Tab through the page from the top with only a keyboard → focus visits About, Projects, Resume (and any in-body link) in visual order, each stop showing a `focus-visible` outline clearly different from the resting and hover state → AC-3
+- [x] Inspect every text/background pair used on the page (body text, meta text, links) with a contrast checker → each meets 4.5:1 (normal text) or 3:1 (large text/UI) → AC-2
+- [x] View page source / network tab → only Inter loads (no serif or mono font request), and the font request is same-origin (self-hosted), not a request to fonts.googleapis.com → AC-6
 
 ## Commands
 
-- [ ] `pnpm typecheck` → 0 errors → supports AC-1, AC-4
-- [ ] `pnpm build` → completes, and the built CSS contains only the project's own utility classes (no leaked classes from `.agents/`, `.claude/`, or `docs/`) → AC-4
-- [ ] `grep -c "@theme" src/styles/global.css` → the nine spec tokens (`--color-bg-primary`, `--color-bg-secondary`, `--color-text-primary`, `--color-text-secondary`, `--color-accent`, `--color-accent-hover`, `--color-border`, `--font-sans`, `--space-section`) are all present → AC-1, AC-4
+- [x] `pnpm typecheck` → 0 errors → supports AC-1, AC-4
+- [x] `pnpm build` → completes, and the built CSS contains only the project's own utility classes (no leaked classes from `.agents/`, `.claude/`, or `docs/`) → AC-4
+- [x] `grep -c "@theme" src/styles/global.css` → the nine spec tokens (`--color-bg-primary`, `--color-bg-secondary`, `--color-text-primary`, `--color-text-secondary`, `--color-accent`, `--color-accent-hover`, `--color-border`, `--font-sans`, `--space-section`) are all present → AC-1, AC-4
 
 ## Acceptance-criteria coverage
 
