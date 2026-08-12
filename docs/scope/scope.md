@@ -12,7 +12,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | # | Feature | Phase | Status |
 |---|---------|-------|--------|
 | 1 | Stack & architecture | Foundation | done |
-| 2 | Coding standards & tooling | Foundation | planned |
+| 2 | Coding standards & tooling | Foundation | in-progress |
 | 3 | Content & data model | Foundation | planned |
 | 4 | Design system & UI foundation | Foundation | planned |
 | 5 | Home / bio page | Slice 1 | planned |
@@ -33,7 +33,9 @@ Spec: [0001](../specs/0001-stack-and-architecture/index.md) · code in `.` (proj
 ### 2. Coding standards & tooling
 Capture conventions, then install lint, format, and pre-commit enforcement from the real scaffolded project.
 **Done when:** root `AGENTS.md` reflects the real stack, and lint/format/pre-commit run clean.
-- [ ] Capture conventions + tooling choices: `/audit`
+code in `.` (project root)
+- [x] Capture conventions + tooling choices: `/audit`
+- [x] Install lint, format, and pre-commit enforcement: `/develop coding standards & tooling`
 
 ### 3. Content & data model · needs a decision
 The schema every page renders from: project entries (title, subtitle, tags, images, description, links) and the bio content structure. Getting this right now avoids a rewrite once several projects are entered. (basis: a wrong data model is the most expensive thing to redo)
