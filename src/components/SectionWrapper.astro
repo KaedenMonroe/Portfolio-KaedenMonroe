@@ -1,0 +1,18 @@
+---
+interface Props {
+  id?: string;
+  spaced?: boolean;
+  class?: string;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
+}
+
+const { id, spaced = false, class: className, ...rest } = Astro.props;
+const classes = [spaced ? "mt-(--space-section)" : "", className]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<section id={id} class={classes} {...rest}>
+  <slot />
+</section>

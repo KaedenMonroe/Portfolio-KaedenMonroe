@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/* Not application source: skill docs and specs contain example class names
+   that would otherwise leak into the compiled utility set. */
+@source not "../../.agents/**";
+@source not "../../.claude/**";
+@source not "../../docs/**";
+
+/* Design tokens: docs/specs/0002-design-system-ui-foundation/index.md */
+@theme inline {
+  --color-bg-primary: #f3f4f5;
+  --color-bg-secondary: #ffffff;
+  --color-text-primary: #17191c;
+  --color-text-secondary: #4b5563;
+  --color-accent: #00539f;
+  --color-accent-hover: #003f79;
+  --color-border: #e2e4e7;
+
+  --font-sans: var(--font-inter);
+
+  --space-section: 7rem;
+}

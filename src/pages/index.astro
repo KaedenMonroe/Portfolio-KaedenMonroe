@@ -1,17 +1,76 @@
 ---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Avatar from "../components/Avatar.astro";
+import SectionWrapper from "../components/SectionWrapper.astro";
+import ProjectCard from "../components/ProjectCard.astro";
 
+const name = "Kaeden Monroe";
+const title = "Mechanical Engineering Junior at the University of Delaware";
+
+const bioParagraphs = [
+  "I'm a Mechanical Engineering student based on the east coast studying at the University of Delaware. Last summer, I interned at UD researching gait biomechanics in the Neuromuscular Biomechanics Lab, focusing on gait detection using an insole sensor developed by the Center for Composite Materials. Over the winter I pivoted within the Undergraduate Research Experience for Undergraduates program, creating a ‘one-click’ 3D reconstruction pipeline utilizing Gaussian Splats for drone imagery data, continuing the work done during the semester with the undergraduate VIP: Drones research group. I'm passionate about system design, cognitive psychology, and working with multidisciplinary teams.",
+  "During the academic semester I lead the VIP: Drones undergraduate research group, TA for a technical communications course and testing suite, I am a student ambassador for the engineering college, and train for triathlons.",
+  "I'm currently working on honing my embedded skills, rapidly building projects within one to two week long sprints to…",
+];
+
+// Placeholder entries: real project content and images depend on the content
+// & data model (scope item 3), not yet decided.
+const projects = [
+  {
+    title: "Project title",
+    subtitle: "Project subtitle",
+    tags: ["Tag"],
+  },
+  {
+    title: "Project title",
+    subtitle: "Project subtitle",
+    tags: ["Tag"],
+  },
+  {
+    title: "Project title",
+    subtitle: "Project subtitle",
+    tags: ["Tag"],
+  },
+];
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
-  </head>
-  <body>
-    <h1>Astro</h1>
-  </body>
-</html>
+<Layout
+  title="Kaeden Monroe"
+  description="Mechanical Engineering junior at the University of Delaware. Bio, research, and project work."
+>
+  <div class="mx-auto max-w-4xl px-6">
+    <Nav name={name} resumeHref="/resume.pdf" />
+
+    <SectionWrapper id="about" aria-label="About">
+      <div class="flex items-center gap-4">
+        <Avatar src="/placeholders/avatar.svg" alt={name} />
+        <div>
+          <p class="text-xl font-medium">{name}</p>
+          <p class="text-base text-text-secondary">{title}</p>
+        </div>
+      </div>
+      <div class="mt-8 flex max-w-[650px] flex-col gap-4 text-base">
+        {bioParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </SectionWrapper>
+
+    <SectionWrapper id="projects" spaced aria-label="Projects">
+      <ul class="flex flex-wrap gap-8">
+        {
+          projects.map((project) => (
+            <li>
+              <ProjectCard
+                image="/placeholders/project.svg"
+                alt={`${project.title} preview`}
+                title={project.title}
+                subtitle={project.subtitle}
+                tags={project.tags}
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </SectionWrapper>
+  </div>
+</Layout>

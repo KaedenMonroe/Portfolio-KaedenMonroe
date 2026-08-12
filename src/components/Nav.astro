@@ -1,0 +1,19 @@
+---
+import InlineLink from "./InlineLink.astro";
+
+interface Props {
+  name: string;
+  resumeHref: string;
+}
+
+const { name, resumeHref } = Astro.props;
+---
+
+<nav class="flex items-center justify-between py-6" aria-label="Primary">
+  <span class="text-base font-medium">{name}</span>
+  <ul class="flex items-center gap-3 text-base sm:gap-6">
+    <li><InlineLink href="#about">About</InlineLink></li>
+    <li><InlineLink href="#projects">Projects</InlineLink></li>
+    <li><InlineLink href={resumeHref} external>Resume</InlineLink></li>
+  </ul>
+</nav>

@@ -1,0 +1,22 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+  src: ImageMetadata | string;
+  alt: string;
+  class?: string;
+}
+
+const { src, alt, class: className } = Astro.props;
+const classes = ["size-15 shrink-0 rounded-full object-cover", className]
+  .filter(Boolean)
+  .join(" ");
+---
+
+{
+  typeof src === "string" ? (
+    <img src={src} alt={alt} class={classes} width={60} height={60} />
+  ) : (
+    <Image src={src} alt={alt} class={classes} width={60} height={60} />
+  )
+}

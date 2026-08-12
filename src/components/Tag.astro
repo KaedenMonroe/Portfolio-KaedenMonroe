@@ -1,0 +1,12 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+const classes = ["text-xs text-text-secondary", className]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<span class={classes}><slot /></span>

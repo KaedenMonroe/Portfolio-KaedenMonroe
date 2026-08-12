@@ -1,0 +1,24 @@
+---
+interface Props {
+  href: string;
+  external?: boolean;
+  class?: string;
+}
+
+const { href, external = false, class: className } = Astro.props;
+const classes = [
+  "text-accent underline decoration-1 underline-offset-2 hover:text-accent-hover",
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<a
+  href={href}
+  class={classes}
+  {...external ? { target: "_blank", rel: "noopener noreferrer" } : {}}
+>
+  <slot />
+</a>

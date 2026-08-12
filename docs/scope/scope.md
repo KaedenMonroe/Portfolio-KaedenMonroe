@@ -45,12 +45,12 @@ The schema every page renders from: project entries (title, subtitle, tags, imag
 ### 4. Design system & UI foundation
 A single restrained sans typeface, a near white background, University of Delaware blue as the one accent, and a deliberate spacing rhythm (so empty space reads as designed, not unfinished), plus base components (nav, links, avatar, project card, focus states). Bio and projects share one scrollable page, not two.
 **Done when:** the token set (color, typography, spacing) and base components are built and pass WCAG AA contrast and keyboard focus checks.
-Spec: [0002](../specs/0002-design-system-ui-foundation/index.md)
+Spec: [0002](../specs/0002-design-system-ui-foundation/index.md) · code in `src/styles/global.css`, `src/components/`, `src/layouts/Layout.astro`, `astro.config.mjs`, `design.md`
 - [x] Design it (spec): `/architect design system & UI foundation`
-- [ ] Build it: `/develop design system & UI foundation`
-  - [ ] Tokens & fonts: Tailwind v4 `@theme` setup, the color/spacing/font tokens, Inter via Astro's Fonts API, WCAG AA contrast verified (AC-1, AC-2, AC-4, AC-6)
-  - [ ] Base components: Avatar, InlineLink, Nav, SectionWrapper, Tag, ProjectCard (AC-3, AC-5)
-  - [ ] Verification pass: keyboard-only focus check, visual check against the Figma wireframe at mobile/tablet/desktop widths (AC-3, AC-5)
+- [x] Build it: `/develop design system & UI foundation`
+  - [x] Tokens & fonts: Tailwind v4 `@theme` setup, the color/spacing/font tokens, Inter via Astro's Fonts API, WCAG AA contrast verified (AC-1, AC-2, AC-4, AC-6)
+  - [x] Base components: Avatar, InlineLink, Nav, SectionWrapper, Tag, ProjectCard (AC-3, AC-5)
+  - [x] Verification pass: keyboard-only focus check, visual check against the Figma wireframe at mobile/tablet/desktop widths (AC-3, AC-5)
 - [ ] Verify it: `/check verify design system & UI foundation`
 
 ## Slice 1: Smallest usable whole
