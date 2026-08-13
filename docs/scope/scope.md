@@ -16,7 +16,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 3 | Content & data model | Foundation | in-progress |
 | 4 | Design system & UI foundation | Foundation | done |
 | 5 | Home / bio page | Slice 1 | planned |
-| 6 | Projects page (static listing) | Slice 1 | in-progress |
+| 6 | Projects page (static listing) | Slice 1 | done |
 | 7 | Interactive project carousel | Slice 2 | planned |
 | 8 | Contact form | Slice 3 | planned |
 | 9 | Privacy-friendly analytics | Slice 4 | planned |
