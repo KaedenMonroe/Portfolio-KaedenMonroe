@@ -17,7 +17,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 4 | Design system & UI foundation | Foundation | done |
 | 5 | Home / bio page | Slice 1 | done |
 | 6 | Projects page (static listing) | Slice 1 | done |
-| 7 | Interactive project carousel | Slice 2 | planned |
+| 7 | Interactive project carousel | Slice 2 | in-progress |
 | 8 | Contact form | Slice 3 | planned |
 | 9 | Privacy-friendly analytics | Slice 4 | planned |
 
@@ -76,10 +76,18 @@ code in `src/pages/index.astro`
 
 ## Slice 2: Interactive project carousel
 
-### 7. Interactive project carousel · needs a decision
-Upgrade the static listing to the designed interaction: free drag/swipe scroll with no visible buttons, plus arrow-key keyboard support so it is usable without a mouse or touch. (basis: non-trivial interactive behavior warrants a decision before build)
+### 7. Interactive project carousel
+Upgrade the static listing to the designed interaction: free drag/swipe scroll with no visible buttons, plus arrow-key keyboard support so it is usable without a mouse or touch. Built on Embla Carousel, center-aligned active card, shared crossfading caption, hover/keyboard gallery cycling, and the accessibility wiring (non-drag click/wheel alternative, single focusable region, reduced-motion, no-JS fallback) WCAG AA requires for a drag-dependent widget. (basis: non-trivial interactive behavior warrants a decision before build)
 **Done when:** a visitor can browse all project entries by dragging/swiping, and by keyboard (arrow keys) with visible focus, on both desktop and touch.
-- [ ] Design it (spec): `/architect interactive project carousel`
+Spec: [0004](../specs/0004-interactive-project-carousel.md) · code in `src/pages/index.astro`, `src/components/ProjectCarousel.astro`, `src/components/ProjectCard.astro`, `src/styles/global.css`
+- [x] Design it (spec): `/architect interactive project carousel`
+- [ ] Build it: `/develop interactive project carousel`
+  - [ ] Core scroll engine: Embla wired over a native scroll-snap fallback, bounded and center-aligned, with wheel and click-to-scroll (AC-1, AC-2, AC-4, AC-9, AC-11, AC-12)
+  - [ ] Keyboard & ARIA region: single focusable region, arrow/Home/End stepping, graceful no-overflow degrade (AC-3, AC-4)
+  - [ ] Shared caption & motion: crossfading, repositioning caption, `aria-live` announcement, `prefers-reduced-motion` handling (AC-5, AC-8)
+  - [ ] Gallery hover/keyboard cycling through cover + gallery images (AC-7)
+  - [ ] Non-interactive card confirmation, build and cross-device verification pass (AC-6, AC-10, AC-11)
+- [ ] Verify it: `/check verify interactive project carousel`
 
 ## Slice 3: Contact form
 
@@ -97,7 +105,7 @@ Add pageview analytics (Plausible/Fathom style, no cookies, no consent banner ne
 
 ## Deferred
 Out of scope for the current build pass, kept so the plan stays honest.
-- **Project detail / case study pages**: a dedicated page per project beyond the listing entry · needs a decision
+- **Project detail / case study pages**: a dedicated page per project beyond the listing entry · needs a decision (spec [0004](../specs/0004-interactive-project-carousel.md) confirmed carousel cards stay non-interactive pending this)
 - **Dedicated resume page**: rendering the resume as a page rather than a PDF download link · needs a decision
 
 ## Legend
