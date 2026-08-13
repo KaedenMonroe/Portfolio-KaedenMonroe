@@ -2,20 +2,19 @@
 import Layout from "../layouts/Layout.astro";
 import Nav from "../components/Nav.astro";
 import Avatar from "../components/Avatar.astro";
+import InlineLink from "../components/InlineLink.astro";
 import SectionWrapper from "../components/SectionWrapper.astro";
 import ProjectCard from "../components/ProjectCard.astro";
+import { getBio } from "../lib/content";
+import { render } from "astro:content";
 
-const name = "Kaeden Monroe";
-const title = "Mechanical Engineering Junior at the University of Delaware";
+const bio = await getBio();
+const { name, title, avatar, avatarAlt, email, resumeUrl, linkedinUrl } =
+  bio.data;
+const { Content } = await render(bio);
 
-const bioParagraphs = [
-  "I'm a Mechanical Engineering student based on the east coast studying at the University of Delaware. Last summer, I interned at UD researching gait biomechanics in the Neuromuscular Biomechanics Lab, focusing on gait detection using an insole sensor developed by the Center for Composite Materials. Over the winter I pivoted within the Undergraduate Research Experience for Undergraduates program, creating a ‘one-click’ 3D reconstruction pipeline utilizing Gaussian Splats for drone imagery data, continuing the work done during the semester with the undergraduate VIP: Drones research group. I'm passionate about system design, cognitive psychology, and working with multidisciplinary teams.",
-  "During the academic semester I lead the VIP: Drones undergraduate research group, TA for a technical communications course and testing suite, I am a student ambassador for the engineering college, and train for triathlons.",
-  "I'm currently working on honing my embedded skills, rapidly building projects within one to two week long sprints to…",
-];
-
-// Placeholder entries: real project content and images depend on the content
-// & data model (scope item 3), not yet decided.
+// Placeholder entries: the projects listing (scope item 6) builds the real
+// grid from getVisibleProjects(); this page only owns the bio section.
 const projects = [
   {
     title: "Project title",
@@ -35,24 +34,27 @@ const projects = [
 ];
 ---
 
-<Layout
-  title="Kaeden Monroe"
-  description="Mechanical Engineering junior at the University of Delaware. Bio, research, and project work."
->
+<Layout title={name} description={`${title}. Bio, research, and project work.`}>
   <div class="mx-auto max-w-4xl px-6">
-    <Nav name={name} resumeHref="/resume.pdf" />
+    <Nav name={name} resumeHref={resumeUrl} />
 
     <SectionWrapper id="about" aria-label="About">
       <div class="flex items-center gap-4">
-        <Avatar src="/placeholders/avatar.svg" alt={name} />
+        <Avatar src={avatar} alt={avatarAlt} />
         <div>
           <p class="text-xl font-medium">{name}</p>
           <p class="text-base text-text-secondary">{title}</p>
         </div>
       </div>
       <div class="mt-8 flex max-w-[650px] flex-col gap-4 text-base">
-        {bioParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+        <Content />
       </div>
+      <ul class="mt-6 flex items-center gap-3 text-base sm:gap-6">
+        <li><InlineLink href={`mailto:${email}`}>Email</InlineLink></li>
+        <li>
+          <InlineLink href={linkedinUrl} external>LinkedIn</InlineLink>
+        </li>
+      </ul>
     </SectionWrapper>
 
     <SectionWrapper id="projects" spaced aria-label="Projects">
