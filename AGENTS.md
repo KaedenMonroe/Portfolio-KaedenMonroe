@@ -33,11 +33,12 @@ Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`.
 - Accessibility baseline: WCAG AA (focus states, alt text, semantic HTML, color contrast).
 - Conventional commit messages (`feat:`, `fix:`, `chore:`, ...).
 - Handle expected failures (e.g. a malformed Content Collection entry) with explicit error returns, not ad hoc try/catch.
+- Design system: build all UI to `design.md` (the restrained, token driven visual system); token values live in `src/styles/global.css`.
 
 ## Tooling
 
-- Linting / formatting: ESLint + Prettier (not installed yet; `astro-eslint-parser` + `eslint-plugin-astro` cover `.astro` files).
-- Pre-commit: lint + format + typecheck on every commit (e.g. husky + lint-staged).
+- Linting / formatting: ESLint + Prettier, installed (`eslint.config.mjs`, `.prettierrc.json`); `astro-eslint-parser` + `eslint-plugin-astro` cover `.astro` files.
+- Pre-commit: husky + lint-staged run lint, format, and typecheck on every commit.
 - Testing gate: typecheck + manual `/check verify` only, no dedicated test suite by default (Alpha workflow).
 - CI: not yet; Netlify already rebuilds and deploys on push.
 
@@ -70,5 +71,8 @@ MCP servers: astro-docs (connected).
 ## Context files
 
 <!-- Nested AGENTS.md files are listed here as they are created -->
+
+- [src/content/AGENTS.md](src/content/AGENTS.md): the content model (schema, query layer, asset conventions).
+- [src/components/AGENTS.md](src/components/AGENTS.md): UI component conventions (props, styling, accessibility).
 
 _Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._
