@@ -46,6 +46,7 @@ Spec: [0003](../specs/0003-content-and-data-model/index.md) · code in `src/cont
   - [x] Content schema & config: `content.config.ts` (bio + projects collections), `tsconfig.json` alias, asset locations, `src/lib/content.ts` query helpers (AC-1, AC-2, AC-3)
   - [ ] Real content seeded: the real bio entry and at least one real project entry, every required field populated (AC-4) — currently seeded with clearly-labeled placeholder/lorem ipsum content only, at the engineer's explicit choice; swap in real content before this ships
   - [x] Build verification: `pnpm build` succeeds against seeded content, a broken required field fails the build (AC-3, AC-5)
+  - [x] `src/pages/index.astro` wired to `getBio()`/`getVisibleProjects()` instead of hardcoded `bioParagraphs`/`projects` arrays
 - [ ] Verify it: `/check verify content & data model`
 
 ### 4. Design system & UI foundation
