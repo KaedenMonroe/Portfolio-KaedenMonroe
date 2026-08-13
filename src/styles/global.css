@@ -19,4 +19,5 @@
   --font-sans: var(--font-inter);
 
   --space-section: 7rem;
+  --duration-fade: 200ms;
 }

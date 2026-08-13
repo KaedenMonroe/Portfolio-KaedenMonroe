@@ -1,0 +1,315 @@
+---
+import type { CollectionEntry } from "astro:content";
+import ProjectCard from "./ProjectCard.astro";
+
+interface Props {
+  projects: CollectionEntry<"projects">[];
+}
+
+const { projects } = Astro.props;
+const first = projects[0];
+---
+
+<div class="relative" data-carousel>
+  <div
+    data-carousel-viewport
+    role="region"
+    aria-label="Projects"
+    tabindex="0"
+    class="snap-x snap-mandatory overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent [&::-webkit-scrollbar]:hidden"
+  >
+    <ul class="flex gap-8" data-carousel-track>
+      {
+        projects.map((project, index) => (
+          <li
+            class="shrink-0 snap-center"
+            data-carousel-slide
+            data-index={index}
+            data-title={project.data.title}
+            data-subtitle={project.data.subtitle}
+          >
+            <ProjectCard
+              cover={project.data.cover}
+              coverAlt={project.data.coverAlt}
+              gallery={project.data.gallery}
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="relative mt-4 h-11" data-carousel-caption-wrapper>
+    {
+      first && (
+        <p
+          class="absolute top-0 left-0 flex flex-col gap-1 transition-[opacity,transform] duration-(--duration-fade) ease-out motion-reduce:duration-0"
+          data-carousel-caption
+          aria-hidden="true"
+        >
+          <span class="text-base font-medium" data-caption-title>
+            {first.data.title}
+          </span>
+          <span class="text-sm text-text-secondary" data-caption-subtitle>
+            {first.data.subtitle}
+          </span>
+        </p>
+      )
+    }
+    <span class="sr-only" data-carousel-caption-live aria-live="polite"></span>
+  </div>
+</div>
+
+<script>
+  import EmblaCarousel, { type EmblaCarouselType } from "embla-carousel";
+
+  const FADE_MS = 200;
+  const CYCLE_MS = 1400;
+  const CLICK_DRAG_THRESHOLD = 10;
+  const SETTLE_ANNOUNCE_DELAY = 150;
+  const DEFAULT_DURATION = 25;
+
+  function initGalleryCycle(card: HTMLElement, hoverCapable: boolean) {
+    const images = Array.from(
+      card.querySelectorAll<HTMLElement>("[data-gallery-image]"),
+    );
+    if (images.length <= 1) return null;
+
+    let timer: number | null = null;
+    let index = 0;
+
+    function show(next: number) {
+      images.forEach((img, i) => {
+        const active = i === next;
+        img.classList.toggle("opacity-100", active);
+        img.classList.toggle("opacity-0", !active);
+        if (active) img.removeAttribute("aria-hidden");
+        else img.setAttribute("aria-hidden", "true");
+      });
+      index = next;
+    }
+
+    function start() {
+      if (timer !== null) return;
+      timer = window.setInterval(() => {
+        show((index + 1) % images.length);
+      }, CYCLE_MS);
+    }
+
+    function stop() {
+      if (timer !== null) {
+        window.clearInterval(timer);
+        timer = null;
+      }
+      show(0);
+    }
+
+    if (hoverCapable) {
+      card.addEventListener("mouseenter", start);
+      card.addEventListener("mouseleave", stop);
+    }
+
+    return { start, stop };
+  }
+
+  function initCarousel(root: HTMLElement) {
+    const viewport = root.querySelector<HTMLElement>(
+      "[data-carousel-viewport]",
+    );
+    const slides = Array.from(
+      root.querySelectorAll<HTMLLIElement>("[data-carousel-slide]"),
+    );
+    const captionWrapper = root.querySelector<HTMLElement>(
+      "[data-carousel-caption-wrapper]",
+    );
+    const caption = root.querySelector<HTMLElement>("[data-carousel-caption]");
+    const captionTitle = root.querySelector<HTMLElement>(
+      "[data-caption-title]",
+    );
+    const captionSubtitle = root.querySelector<HTMLElement>(
+      "[data-caption-subtitle]",
+    );
+    const captionLive = root.querySelector<HTMLElement>(
+      "[data-carousel-caption-live]",
+    );
+
+    if (!viewport || slides.length === 0) return;
+
+    const hoverCapable = window.matchMedia("(hover: hover)").matches;
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const cycles = slides.map((slide) => initGalleryCycle(slide, hoverCapable));
+
+    const emblaApi: EmblaCarouselType = EmblaCarousel(viewport, {
+      align: "center",
+      containScroll: "trimSnaps",
+      loop: false,
+      dragFree: false,
+      duration: motionQuery.matches ? 0 : DEFAULT_DURATION,
+    });
+
+    // Upgrade from the native scroll-snap fallback to Embla's transform-driven viewport.
+    viewport.classList.remove("snap-x", "snap-mandatory", "overflow-x-auto");
+    viewport.classList.add("overflow-hidden");
+
+    function applyMotionPreference() {
+      emblaApi.reInit({
+        duration: motionQuery.matches ? 0 : DEFAULT_DURATION,
+      });
+    }
+    motionQuery.addEventListener("change", applyMotionPreference);
+
+    function syncInteractive() {
+      if (!viewport) return;
+      const canScroll = emblaApi.scrollSnapList().length > 1;
+      if (canScroll) {
+        viewport.setAttribute("role", "region");
+        viewport.setAttribute("aria-label", "Projects");
+        viewport.setAttribute("tabindex", "0");
+      } else {
+        viewport.removeAttribute("role");
+        viewport.removeAttribute("aria-label");
+        viewport.removeAttribute("tabindex");
+      }
+    }
+    syncInteractive();
+
+    function positionCaption(slide: HTMLElement) {
+      if (!captionWrapper || !caption) return;
+      const wrapperRect = captionWrapper.getBoundingClientRect();
+      const slideRect = slide.getBoundingClientRect();
+      caption.style.transform = `translateX(${slideRect.left - wrapperRect.left}px)`;
+    }
+
+    function updateCaption(index: number) {
+      const slide = slides[index];
+      if (!slide || !caption || !captionTitle || !captionSubtitle) return;
+      positionCaption(slide);
+      const applyText = () => {
+        captionTitle.textContent = slide.dataset.title ?? "";
+        captionSubtitle.textContent = slide.dataset.subtitle ?? "";
+      };
+      if (motionQuery.matches) {
+        applyText();
+        return;
+      }
+      caption.classList.add("opacity-0");
+      window.setTimeout(() => {
+        applyText();
+        caption.classList.remove("opacity-0");
+      }, FADE_MS);
+    }
+
+    let announceTimer: number | null = null;
+    function announceActive(index: number) {
+      const slide = slides[index];
+      if (!slide || !captionLive) return;
+      if (announceTimer !== null) window.clearTimeout(announceTimer);
+      announceTimer = window.setTimeout(() => {
+        captionLive.textContent = `${slide.dataset.title ?? ""}, ${slide.dataset.subtitle ?? ""}`;
+      }, SETTLE_ANNOUNCE_DELAY);
+    }
+
+    emblaApi.on("select", () => updateCaption(emblaApi.selectedScrollSnap()));
+    emblaApi.on("settle", () => announceActive(emblaApi.selectedScrollSnap()));
+    emblaApi.on("reInit", () => {
+      syncInteractive();
+      updateCaption(emblaApi.selectedScrollSnap());
+    });
+
+    // Wheel / trackpad: a bounded, discrete step per horizontal gesture (AC-2).
+    let wheelCooldown = false;
+    viewport.addEventListener(
+      "wheel",
+      (event) => {
+        if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+        const forward = event.deltaX > 0;
+        if (
+          (forward && !emblaApi.canScrollNext()) ||
+          (!forward && !emblaApi.canScrollPrev())
+        ) {
+          return;
+        }
+        event.preventDefault();
+        if (wheelCooldown) return;
+        wheelCooldown = true;
+        if (forward) emblaApi.scrollNext();
+        else emblaApi.scrollPrev();
+        window.setTimeout(() => {
+          wheelCooldown = false;
+        }, 300);
+      },
+      { passive: false },
+    );
+
+    // Click-to-scroll on a partially visible card, distinguished from a drag release (AC-2, AC-6).
+    let pointerDownX = 0;
+    let didDrag = false;
+    viewport.addEventListener("pointerdown", (event) => {
+      pointerDownX = event.clientX;
+      didDrag = false;
+    });
+    viewport.addEventListener("pointermove", (event) => {
+      if (Math.abs(event.clientX - pointerDownX) > CLICK_DRAG_THRESHOLD) {
+        didDrag = true;
+      }
+    });
+    slides.forEach((slide, index) => {
+      slide.addEventListener("click", () => {
+        if (didDrag) return;
+        emblaApi.scrollTo(index);
+      });
+    });
+
+    // Keyboard: a single focusable region, bounded stepping (AC-3, AC-4).
+    viewport.addEventListener("keydown", (event) => {
+      if (viewport.getAttribute("tabindex") === null) return;
+      switch (event.key) {
+        case "ArrowLeft":
+          event.preventDefault();
+          emblaApi.scrollPrev();
+          break;
+        case "ArrowRight":
+          event.preventDefault();
+          emblaApi.scrollNext();
+          break;
+        case "Home":
+          event.preventDefault();
+          emblaApi.scrollTo(0);
+          break;
+        case "End":
+          event.preventDefault();
+          emblaApi.scrollTo(emblaApi.scrollSnapList().length - 1);
+          break;
+        default:
+          break;
+      }
+    });
+
+    // Keyboard-focus gallery cycling: only the active card, only while the region has :focus-visible (AC-7).
+    if (hoverCapable) {
+      let keyboardActiveIndex: number | null = null;
+      const syncKeyboardCycle = () => {
+        const isFocusVisible =
+          document.activeElement === viewport &&
+          viewport.matches(":focus-visible");
+        const nextIndex = isFocusVisible ? emblaApi.selectedScrollSnap() : null;
+        if (nextIndex === keyboardActiveIndex) return;
+        if (keyboardActiveIndex !== null) cycles[keyboardActiveIndex]?.stop();
+        keyboardActiveIndex = nextIndex;
+        if (keyboardActiveIndex !== null) {
+          cycles[keyboardActiveIndex]?.start();
+        }
+      };
+      viewport.addEventListener("focus", syncKeyboardCycle);
+      viewport.addEventListener("blur", syncKeyboardCycle);
+      emblaApi.on("select", syncKeyboardCycle);
+    }
+
+    updateCaption(emblaApi.selectedScrollSnap());
+  }
+
+  document
+    .querySelectorAll<HTMLElement>("[data-carousel]")
+    .forEach(initCarousel);
+</script>

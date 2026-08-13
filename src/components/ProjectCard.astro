@@ -1,58 +1,64 @@
 ---
 import { Image } from "astro:assets";
-import Tag from "./Tag.astro";
+import type { CollectionEntry } from "astro:content";
+
+type GalleryItem = CollectionEntry<"projects">["data"]["gallery"][number];
 
 interface Props {
-  image: ImageMetadata | string;
-  alt: string;
-  title: string;
-  subtitle: string;
-  tags?: string[];
+  cover: ImageMetadata | string;
+  coverAlt: string;
+  gallery?: GalleryItem[];
   class?: string;
 }
 
-const {
-  image,
-  alt,
-  title,
-  subtitle,
-  tags = [],
-  class: className,
-} = Astro.props;
-const classes = ["flex w-72 shrink-0 flex-col gap-3", className]
+const { cover, coverAlt, gallery = [], class: className } = Astro.props;
+
+const images: { src: ImageMetadata | string; alt: string }[] = [
+  { src: cover, alt: coverAlt },
+  ...gallery
+    .filter(
+      (item): item is Extract<GalleryItem, { type: "image" }> =>
+        item.type === "image",
+    )
+    .map((item) => ({ src: item.src, alt: item.alt })),
+];
+
+const classes = [
+  "relative aspect-[3/2] w-[min(18rem,78vw)] shrink-0 overflow-hidden rounded-md bg-bg-secondary",
+  className,
+]
   .filter(Boolean)
   .join(" ");
 ---
 
-<article class={classes}>
+<div class={classes} data-gallery>
   {
-    typeof image === "string" ? (
-      <img
-        src={image}
-        alt={alt}
-        class="aspect-[3/2] w-full rounded-md object-cover"
-      />
-    ) : (
-      <Image
-        src={image}
-        alt={alt}
-        class="aspect-[3/2] w-full rounded-md object-cover"
-      />
-    )
+    images.map((img, index) => {
+      const imgClasses = [
+        "absolute inset-0 h-full w-full object-cover transition-opacity duration-(--duration-fade) ease-out motion-reduce:duration-0",
+        index === 0 ? "opacity-100" : "opacity-0",
+      ].join(" ");
+      return typeof img.src === "string" ? (
+        <img
+          src={img.src}
+          alt={img.alt}
+          data-gallery-image
+          data-index={index}
+          aria-hidden={index === 0 ? undefined : "true"}
+          loading={index === 0 ? "eager" : "lazy"}
+          class={imgClasses}
+        />
+      ) : (
+        <Image
+          src={img.src}
+          alt={img.alt}
+          data-gallery-image
+          data-index={index}
+          aria-hidden={index === 0 ? undefined : "true"}
+          loading={index === 0 ? "eager" : "lazy"}
+          class={imgClasses}
+        />
+      );
+    })
   }
-  <div class="flex flex-col gap-1">
-    <h3 class="text-base font-medium">{title}</h3>
-    <p class="text-sm text-text-secondary">{subtitle}</p>
-    {
-      tags.length > 0 && (
-        <ul class="mt-1 flex flex-wrap gap-2">
-          {tags.map((tag) => (
-            <li>
-              <Tag>{tag}</Tag>
-            </li>
-          ))}
-        </ul>
-      )
-    }
-  </div>
-</article>
+</div>

@@ -4,7 +4,7 @@ import Nav from "../components/Nav.astro";
 import Avatar from "../components/Avatar.astro";
 import InlineLink from "../components/InlineLink.astro";
 import SectionWrapper from "../components/SectionWrapper.astro";
-import ProjectCard from "../components/ProjectCard.astro";
+import ProjectCarousel from "../components/ProjectCarousel.astro";
 import { getBio, getVisibleProjects } from "../lib/content";
 import { render } from "astro:content";
 
@@ -40,21 +40,7 @@ const projects = await getVisibleProjects();
     </SectionWrapper>
 
     <SectionWrapper id="projects" spaced aria-label="Projects">
-      <ul class="flex flex-wrap gap-8">
-        {
-          projects.map((project) => (
-            <li>
-              <ProjectCard
-                image={project.data.cover}
-                alt={project.data.coverAlt}
-                title={project.data.title}
-                subtitle={project.data.subtitle}
-                tags={project.data.tags}
-              />
-            </li>
-          ))
-        }
-      </ul>
+      <ProjectCarousel projects={projects} />
     </SectionWrapper>
   </div>
 </Layout>

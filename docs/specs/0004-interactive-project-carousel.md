@@ -1,7 +1,7 @@
 # 0004. Interactive project carousel
 
 **Date**: 2026-08-13
-**Status**: Proposed
+**Status**: In Progress
 
 ## Summary
 
