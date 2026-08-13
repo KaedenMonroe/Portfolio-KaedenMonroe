@@ -13,7 +13,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 |---|---------|-------|--------|
 | 1 | Stack & architecture | Foundation | done |
 | 2 | Coding standards & tooling | Foundation | done |
-| 3 | Content & data model | Foundation | planned |
+| 3 | Content & data model | Foundation | in-progress |
 | 4 | Design system & UI foundation | Foundation | done |
 | 5 | Home / bio page | Slice 1 | planned |
 | 6 | Projects page (static listing) | Slice 1 | planned |
@@ -37,10 +37,16 @@ code in `.` (project root)
 - [x] Capture conventions + tooling choices: `/audit`
 - [x] Install lint, format, and pre-commit enforcement: `/develop coding standards & tooling`
 
-### 3. Content & data model · needs a decision
-The schema every page renders from: project entries (title, subtitle, tags, images, description, links) and the bio content structure. Getting this right now avoids a rewrite once several projects are entered. (basis: a wrong data model is the most expensive thing to redo)
+### 3. Content & data model
+The schema every page renders from: project entries (title, subtitle, tags, a cover image, an optional image/video gallery, description, links) and the bio content structure. Getting this right now avoids a rewrite once several projects are entered. (basis: a wrong data model is the most expensive thing to redo)
 **Done when:** the content schema supports the bio page and the projects listing without a breaking change once real content is entered.
-- [ ] Design it (spec): `/architect content & data model`
+Spec: [0003](../specs/0003-content-and-data-model/index.md) · code in `src/content.config.ts`, `src/lib/content.ts`, `src/content/`, `src/assets/`
+- [x] Design it (spec): `/architect content & data model`
+- [ ] Build it: `/develop content & data model`
+  - [x] Content schema & config: `content.config.ts` (bio + projects collections), `tsconfig.json` alias, asset locations, `src/lib/content.ts` query helpers (AC-1, AC-2, AC-3)
+  - [ ] Real content seeded: the real bio entry and at least one real project entry, every required field populated (AC-4) — currently seeded with clearly-labeled placeholder/lorem ipsum content only, at the engineer's explicit choice; swap in real content before this ships
+  - [x] Build verification: `pnpm build` succeeds against seeded content, a broken required field fails the build (AC-3, AC-5)
+- [ ] Verify it: `/check verify content & data model`
 
 ### 4. Design system & UI foundation
 A single restrained sans typeface, a near white background, University of Delaware blue as the one accent, and a deliberate spacing rhythm (so empty space reads as designed, not unfinished), plus base components (nav, links, avatar, project card, focus states). Bio and projects share one scrollable page, not two.
