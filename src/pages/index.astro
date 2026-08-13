@@ -4,6 +4,7 @@ import Nav from "../components/Nav.astro";
 import Avatar from "../components/Avatar.astro";
 import SectionWrapper from "../components/SectionWrapper.astro";
 import ProjectCard from "../components/ProjectCard.astro";
+import { getVisibleProjects } from "../lib/content";
 
 const name = "Kaeden Monroe";
 const title = "Mechanical Engineering Junior at the University of Delaware";
@@ -14,25 +15,7 @@ const bioParagraphs = [
   "I'm currently working on honing my embedded skills, rapidly building projects within one to two week long sprints to…",
 ];
 
-// Placeholder entries: real project content and images depend on the content
-// & data model (scope item 3), not yet decided.
-const projects = [
-  {
-    title: "Project title",
-    subtitle: "Project subtitle",
-    tags: ["Tag"],
-  },
-  {
-    title: "Project title",
-    subtitle: "Project subtitle",
-    tags: ["Tag"],
-  },
-  {
-    title: "Project title",
-    subtitle: "Project subtitle",
-    tags: ["Tag"],
-  },
-];
+const projects = await getVisibleProjects();
 ---
 
 <Layout
@@ -61,11 +44,11 @@ const projects = [
           projects.map((project) => (
             <li>
               <ProjectCard
-                image="/placeholders/project.svg"
-                alt={`${project.title} preview`}
-                title={project.title}
-                subtitle={project.subtitle}
-                tags={project.tags}
+                image={project.data.cover}
+                alt={project.data.coverAlt}
+                title={project.data.title}
+                subtitle={project.data.subtitle}
+                tags={project.data.tags}
               />
             </li>
           ))
