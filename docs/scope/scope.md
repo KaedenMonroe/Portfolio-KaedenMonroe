@@ -16,7 +16,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 3 | Content & data model | Foundation | in-progress |
 | 4 | Design system & UI foundation | Foundation | done |
 | 5 | Home / bio page | Slice 1 | planned |
-| 6 | Projects page (static listing) | Slice 1 | planned |
+| 6 | Projects page (static listing) | Slice 1 | in-progress |
 | 7 | Interactive project carousel | Slice 2 | planned |
 | 8 | Contact form | Slice 3 | planned |
 | 9 | Privacy-friendly analytics | Slice 4 | planned |
@@ -69,7 +69,8 @@ Name, nav, avatar, title, bio copy, and a visual cue at the bottom directing to 
 ### 6. Projects page (static listing)
 The projects page rendering real entries from the content model, laid out so it is genuinely browsable (a plain scrollable row or grid) even before the polished drag/swipe carousel interaction is built. Structure cut deliberately: the fancy interaction is not required to be useful today.
 **Done when:** a visitor can see and read every project entry (image, title, subtitle) on one page without missing content, using real content entries.
-- [ ] Build it: `/develop projects page`
+code in `src/pages/index.astro`
+- [x] Build it: `/develop projects page`
 
 ## Slice 2: Interactive project carousel
 
