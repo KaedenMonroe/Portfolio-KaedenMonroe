@@ -1,4 +1,5 @@
 import { getCollection, getEntry } from "astro:content";
+import { assertCardWidthInRange } from "./cardSize";
 
 export async function getBio() {
   const bio = await getEntry("bio", "index");
@@ -11,5 +12,12 @@ export async function getVisibleProjects() {
     "projects",
     (entry) => !entry.data.draft,
   );
-  return projects.sort((a, b) => a.data.order - b.data.order);
+  const sorted = projects.sort((a, b) => a.data.order - b.data.order);
+  for (const project of sorted) {
+    assertCardWidthInRange(
+      project.id,
+      project.data.cover.width / project.data.cover.height,
+    );
+  }
+  return sorted;
 }

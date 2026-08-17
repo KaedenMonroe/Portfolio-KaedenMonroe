@@ -1,11 +1,16 @@
 ---
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
+import {
+  CARD_HEIGHT_DESKTOP,
+  CARD_HEIGHT_MOBILE,
+  CARD_HEIGHT_TABLET,
+} from "../lib/cardSize";
 
 type GalleryItem = CollectionEntry<"projects">["data"]["gallery"][number];
 
 interface Props {
-  cover: ImageMetadata | string;
+  cover: ImageMetadata;
   coverAlt: string;
   gallery?: GalleryItem[];
   class?: string;
@@ -23,19 +28,23 @@ const images: { src: ImageMetadata | string; alt: string }[] = [
     .map((item) => ({ src: item.src, alt: item.alt })),
 ];
 
+const aspectRatio = cover.width / cover.height;
+
 const classes = [
-  "relative aspect-[3/2] w-[min(18rem,78vw)] shrink-0 overflow-hidden rounded-md bg-bg-secondary",
+  "card-size relative shrink-0 overflow-hidden rounded-md bg-bg-primary",
   className,
 ]
   .filter(Boolean)
   .join(" ");
+
+const sizeVars = `--card-ratio:${aspectRatio};--card-h-mobile:${CARD_HEIGHT_MOBILE}px;--card-h-tablet:${CARD_HEIGHT_TABLET}px;--card-h-desktop:${CARD_HEIGHT_DESKTOP}px;`;
 ---
 
-<div class={classes} data-gallery>
+<div class={classes} style={sizeVars} data-gallery>
   {
     images.map((img, index) => {
       const imgClasses = [
-        "absolute inset-0 h-full w-full object-cover transition-opacity duration-(--duration-fade) ease-out motion-reduce:duration-0",
+        "absolute inset-0 h-full w-full object-contain transition-opacity duration-(--duration-fade) ease-out motion-reduce:duration-0",
         index === 0 ? "opacity-100" : "opacity-0",
       ].join(" ");
       return typeof img.src === "string" ? (
@@ -62,3 +71,28 @@ const classes = [
     })
   }
 </div>
+
+<style>
+  /* Height is fixed per tier; width follows from --card-ratio so it
+     tracks the cover image's own shape (AC-9). min() against a viewport
+     unit is a hard technical floor so no card can exceed the viewport,
+     independent of whatever height/ratio the tier tuning lands on. */
+  .card-size {
+    height: var(--card-h-mobile);
+    width: min(calc(var(--card-h-mobile) * var(--card-ratio)), 92vw);
+  }
+
+  @media (min-width: 40rem) {
+    .card-size {
+      height: var(--card-h-tablet);
+      width: min(calc(var(--card-h-tablet) * var(--card-ratio)), 92vw);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .card-size {
+      height: var(--card-h-desktop);
+      width: min(calc(var(--card-h-desktop) * var(--card-ratio)), 92vw);
+    }
+  }
+</style>
