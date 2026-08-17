@@ -1,7 +1,7 @@
 # 0004. Interactive project carousel
 
 **Date**: 2026-08-13
-**Status**: In Progress
+**Status**: Accepted
 
 ## Summary
 
@@ -155,4 +155,4 @@ Step 13's desktop tuning landed at `CARD_HEIGHT_DESKTOP = 480`, `[350, 750]` (`s
 - [x] Update `design.md`'s Composition patterns paragraph (governed by spec [0002](../0002-design-system-ui-foundation/index.md)): rewritten to describe the shared caption carousel, variable card widths, and the `lg:` layout split into two regions (`--content-width-narrow` bio column, full width projects section), and to document the `--duration-fade`/`--content-width-narrow` tokens; the stale "Meta text" bullet naming `ProjectCard subtitle, Tag` was fixed for the same reason.
 - [x] Desktop tier height and width envelope: tuned live in the dev server against the real seeded project images and the oliviercarignan.com reference, landed at `CARD_HEIGHT_DESKTOP = 480`, `[350, 750]` (`src/lib/cardSize.ts`), satisfying the AC-12 three-card clip target.
 - [ ] Mobile and tablet tier heights are still the original starting values (`CARD_HEIGHT_MOBILE = 320`, `CARD_HEIGHT_TABLET = 420`), not yet tuned live the way the desktop tier was. A values-only change here does not need a further spec update, only a mechanism change (e.g. a different source than the cover's natural aspect ratio) would.
-- [ ] `/check verify` (2026-08-17) found the caption can push the whole page into a horizontal scroll below the `min-width: 64rem` caption-anchor breakpoint (confirmed at 500px and 600px wide): the fallback caption position (the active card's own left edge, see Key invariants) has no width cap of its own, so a wide active card plus the caption's own text width can run past the viewport's right edge. Root cause and fix belong to `/debug`, not this spec, but the spec's caption-anchor description above already reflects the mechanism as shipped, including this gap.
+- [x] `/check verify` (2026-08-17) found the caption can push the whole page into a horizontal scroll below the `min-width: 64rem` caption-anchor breakpoint (confirmed at 500px and 600px wide). Fixed in `ba376ec` (clamp caption position to its wrapper); re-verified by `/check verify` (2026-08-17): no horizontal overflow at 500px or 606px.

@@ -17,7 +17,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 4 | Design system & UI foundation | Foundation | done |
 | 5 | Home / bio page | Slice 1 | done |
 | 6 | Projects page (static listing) | Slice 1 | done |
-| 7 | Interactive project carousel | Slice 2 | in-progress |
+| 7 | Interactive project carousel | Slice 2 | done |
 | 8 | Contact form | Slice 3 | planned |
 | 9 | Privacy-friendly analytics | Slice 4 | planned |
 
@@ -81,14 +81,14 @@ Upgrade the static listing to the designed interaction: free drag/swipe scroll w
 **Done when:** a visitor can browse all project entries by dragging/swiping, and by keyboard (arrow keys) with visible focus, on both desktop and touch.
 Spec: [0004](../specs/0004-interactive-project-carousel/index.md) · code in `src/pages/index.astro`, `src/components/ProjectCarousel.astro`, `src/components/ProjectCard.astro`, `src/styles/global.css`
 - [x] Design it (spec): `/architect interactive project carousel`
-- [ ] Build it: `/develop interactive project carousel`
+- [x] Build it: `/develop interactive project carousel`
   - [x] Core scroll engine: Embla wired over a native scroll-snap fallback, bounded and center-aligned, with wheel and click-to-scroll (AC-1, AC-2, AC-4, AC-9, AC-11, AC-12)
   - [x] Keyboard & ARIA region: single focusable region, arrow/Home/End stepping, graceful no-overflow degrade (AC-3, AC-4)
   - [x] Shared caption & motion: crossfading, repositioning caption, `aria-live` announcement, `prefers-reduced-motion` handling (AC-5, AC-8)
   - [x] Gallery hover/keyboard cycling through cover + gallery images (AC-7)
   - [x] Non-interactive card confirmation, build and cross-device verification pass (AC-6, AC-10, AC-11)
   - [x] Variable card sizing: per breakpoint tier shared height, per-card width from the cover's natural aspect ratio, build-time envelope validation, tuned live with the engineer (AC-9, AC-12, AC-13)
-- [ ] Verify it: `/check verify interactive project carousel`
+- [x] Verify it: `/check verify interactive project carousel`
 
 ## Slice 3: Contact form
 
