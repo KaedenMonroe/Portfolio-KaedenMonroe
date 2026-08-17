@@ -4,7 +4,7 @@
 
 - **Language / Runtime**: TypeScript (strict mode), Node ^24.0.0
 - **Framework**: Astro 7
-- **Key dependencies**: Tailwind CSS, Astro Content Collections, astro:assets, @astrojs/sitemap
+- **Key dependencies**: Tailwind CSS, Astro Content Collections, astro:assets, @astrojs/sitemap, Embla Carousel
 - **Package manager**: pnpm
 
 ## Build approach
@@ -22,7 +22,7 @@ pnpm build     # build
 
 ## Specs
 
-Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`.
+Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`, or `docs/specs/NNNN-title/index.md` (plus `rationale.md`, `verify.md`, etc.) once a spec grows past a single file.
 
 ## Rules
 
@@ -64,7 +64,7 @@ Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`.
 - [reference-design-contract](.agents/skills/reference-design-contract/): `nexu-io/open-design`, turns taste references (screenshots, URLs, notes) into a grounded design.md handoff.
 
 Later: the `seo` skill (same `addyosmani/web-quality-skills` bundle) once SEO work starts; Fathom/Umami analytics MCP servers once the analytics feature (item 9) is designed.
-Declined: `giuseppe-trisciuoglio/developer-kit`, `josiahsiegel/claude-plugin-marketplace`, `hairyf/skills`, `jwynia/agent-skills`, `antfu/skills`, `mindrally/skills`, `openai/skills`, `mastepanoski/claude-skills`, `wshobson/agents`.
+Declined: `giuseppe-trisciuoglio/developer-kit`, `josiahsiegel/claude-plugin-marketplace`, `hairyf/skills`, `jwynia/agent-skills`, `antfu/skills`, `mindrally/skills`, `openai/skills`, `mastepanoski/claude-skills`, `wshobson/agents`; an Agent Skill for `embla-carousel` (declined at /sync, 2026-08-17).
 Remove once design is finalized and development begins: `brainstorming`, `creative-director`, `design-brief`, `design-consultation`, `design-review`, `plan-design-review`, `reference-design-contract` (all `nexu-io/open-design`). UI-design-stage-only skills; keeping them loaded past that point is unneeded token overhead during build work.
 MCP servers: astro-docs (connected).
 
@@ -74,5 +74,6 @@ MCP servers: astro-docs (connected).
 
 - [src/content/AGENTS.md](src/content/AGENTS.md): the content model (schema, query layer, asset conventions).
 - [src/components/AGENTS.md](src/components/AGENTS.md): UI component conventions (props, styling, accessibility).
+- [src/lib/AGENTS.md](src/lib/AGENTS.md): content query layer and carousel card sizing math.
 
 _Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._

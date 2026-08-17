@@ -3,7 +3,7 @@
 ## Files
 
 - Schema: `src/content.config.ts` (the `bio` and `projects` collections, Zod schemas via `astro:content`).
-- Query layer: `src/lib/content.ts` (`getBio()`, `getVisibleProjects()`). Pages read content only through these two functions, never `getCollection`/`getEntry` directly, so filtering (`draft`) and sorting (`order`) stay in one place.
+- Query layer: `src/lib/content.ts` (`getBio()`, `getVisibleProjects()`). Pages read content only through these two functions, never `getCollection`/`getEntry` directly, so filtering (`draft`) and sorting (`order`) stay in one place. `getVisibleProjects()` also asserts each project's cover image fits the desktop card-width envelope (`src/lib/cardSize.ts`, spec 0004), throwing a build-time error naming the project if it doesn't.
 - Content data: `src/content/bio/index.md` (one singleton entry), `src/content/projects/<slug>.md` (one file per project).
 
 ## Conventions
