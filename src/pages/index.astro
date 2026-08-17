@@ -2,15 +2,13 @@
 import Layout from "../layouts/Layout.astro";
 import Nav from "../components/Nav.astro";
 import Avatar from "../components/Avatar.astro";
-import InlineLink from "../components/InlineLink.astro";
 import SectionWrapper from "../components/SectionWrapper.astro";
 import ProjectCarousel from "../components/ProjectCarousel.astro";
 import { getBio, getVisibleProjects } from "../lib/content";
 import { render } from "astro:content";
 
 const bio = await getBio();
-const { name, title, avatar, avatarAlt, email, resumeUrl, linkedinUrl } =
-  bio.data;
+const { name, title, avatar, avatarAlt, resumeUrl } = bio.data;
 const { Content } = await render(bio);
 
 const projects = await getVisibleProjects();
@@ -21,26 +19,27 @@ const projects = await getVisibleProjects();
     <Nav name={name} resumeHref={resumeUrl} />
 
     <SectionWrapper id="about" aria-label="About">
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-4 lg:gap-3">
         <Avatar src={avatar} alt={avatarAlt} />
         <div>
-          <p class="text-xl font-medium">{name}</p>
+          <p class="text-xl font-medium" data-bio-name>{name}</p>
           <p class="text-base text-text-secondary">{title}</p>
         </div>
       </div>
-      <div class="mt-8 flex max-w-[650px] flex-col gap-4 text-base">
+      <div
+        class="mt-8 flex max-w-[650px] flex-col gap-4 text-base lg:mt-6 lg:gap-3 lg:leading-snug"
+      >
         <Content />
       </div>
-      <ul class="mt-6 flex items-center gap-3 text-base sm:gap-6">
-        <li><InlineLink href={`mailto:${email}`}>Email</InlineLink></li>
-        <li>
-          <InlineLink href={linkedinUrl} external>LinkedIn</InlineLink>
-        </li>
-      </ul>
-    </SectionWrapper>
-
-    <SectionWrapper id="projects" spaced aria-label="Projects">
-      <ProjectCarousel projects={projects} />
     </SectionWrapper>
   </div>
+
+  <SectionWrapper
+    id="projects"
+    spaced
+    aria-label="Projects"
+    class="mx-auto flex min-h-screen w-full max-w-[1800px] flex-col justify-center lg:min-h-0 lg:mt-16 lg:pb-24"
+  >
+    <ProjectCarousel projects={projects} />
+  </SectionWrapper>
 </Layout>

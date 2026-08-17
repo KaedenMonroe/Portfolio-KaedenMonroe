@@ -68,6 +68,11 @@ const first = projects[0];
   const CLICK_DRAG_THRESHOLD = 10;
   const SETTLE_ANNOUNCE_DELAY = 150;
   const DEFAULT_DURATION = 25;
+  // Matches the desktop tier breakpoint in ProjectCard.astro's <style> block.
+  const CAPTION_ANCHOR_BREAKPOINT = "(min-width: 64rem)";
+  // Small nudge left of the bio name's own left edge; starting value only,
+  // tune live in the dev server.
+  const CAPTION_ANCHOR_OFFSET = 8;
 
   function initGalleryCycle(card: HTMLElement, hoverCapable: boolean) {
     const images = Array.from(
@@ -142,7 +147,10 @@ const first = projects[0];
 
     const emblaApi: EmblaCarouselType = EmblaCarousel(viewport, {
       align: "center",
-      containScroll: "trimSnaps",
+      // false (not "trimSnaps"): lets the first/last slide still center
+      // with blank space on the side that has no neighbor, instead of
+      // snapping flush to the viewport edge.
+      containScroll: false,
       loop: false,
       dragFree: false,
       duration: motionQuery.matches ? 0 : DEFAULT_DURATION,
@@ -174,11 +182,22 @@ const first = projects[0];
     }
     syncInteractive();
 
+    // Desktop only: the caption's title stays put at a fixed x (near the
+    // bio name's left edge) regardless of which card is active, rather
+    // than tracking each card's own (variable) position.
+    function fixedCaptionLeft(): number | null {
+      if (!window.matchMedia(CAPTION_ANCHOR_BREAKPOINT).matches) return null;
+      const bioName = document.querySelector<HTMLElement>("[data-bio-name]");
+      if (!bioName) return null;
+      return bioName.getBoundingClientRect().left - CAPTION_ANCHOR_OFFSET;
+    }
+
     function positionCaption(slide: HTMLElement) {
       if (!captionWrapper || !caption) return;
       const wrapperRect = captionWrapper.getBoundingClientRect();
-      const slideRect = slide.getBoundingClientRect();
-      caption.style.transform = `translateX(${slideRect.left - wrapperRect.left}px)`;
+      const anchorLeft =
+        fixedCaptionLeft() ?? slide.getBoundingClientRect().left;
+      caption.style.transform = `translateX(${anchorLeft - wrapperRect.left}px)`;
     }
 
     function updateCaption(index: number) {
@@ -211,7 +230,15 @@ const first = projects[0];
     }
 
     emblaApi.on("select", () => updateCaption(emblaApi.selectedScrollSnap()));
-    emblaApi.on("settle", () => announceActive(emblaApi.selectedScrollSnap()));
+    emblaApi.on("settle", () => {
+      // `select` fires as the scroll animation starts, so the slide's
+      // measured position there can be mid-flight and go stale; resync
+      // once the animation has actually finished moving the DOM.
+      const index = emblaApi.selectedScrollSnap();
+      const slide = slides[index];
+      if (slide) positionCaption(slide);
+      announceActive(index);
+    });
     emblaApi.on("reInit", () => {
       syncInteractive();
       updateCaption(emblaApi.selectedScrollSnap());
