@@ -19,17 +19,19 @@ const projects = await getVisibleProjects();
     <Nav name={name} resumeHref={resumeUrl} />
 
     <SectionWrapper id="about" aria-label="About">
-      <div class="flex items-center gap-4 lg:gap-3">
-        <Avatar src={avatar} alt={avatarAlt} />
-        <div>
-          <p class="text-xl font-medium" data-bio-name>{name}</p>
-          <p class="text-base text-text-secondary">{title}</p>
+      <div class="lg:mx-auto lg:max-w-(--content-width-narrow)">
+        <div class="flex items-center gap-4 lg:gap-3">
+          <Avatar src={avatar} alt={avatarAlt} />
+          <div>
+            <p class="text-xl font-medium" data-bio-name>{name}</p>
+            <p class="text-base text-text-secondary">{title}</p>
+          </div>
         </div>
-      </div>
-      <div
-        class="mt-8 flex max-w-[650px] flex-col gap-4 text-base lg:mt-6 lg:gap-3 lg:leading-snug"
-      >
-        <Content />
+        <div
+          class="mt-8 flex flex-col gap-4 text-base lg:mt-6 lg:gap-3 lg:leading-snug"
+        >
+          <Content />
+        </div>
       </div>
     </SectionWrapper>
   </div>
