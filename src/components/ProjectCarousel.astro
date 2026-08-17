@@ -197,7 +197,15 @@ const first = projects[0];
       const wrapperRect = captionWrapper.getBoundingClientRect();
       const anchorLeft =
         fixedCaptionLeft() ?? slide.getBoundingClientRect().left;
-      caption.style.transform = `translateX(${anchorLeft - wrapperRect.left}px)`;
+      // Clamp to the wrapper's own box: below the desktop tier, anchorLeft
+      // tracks the active card's raw viewport position, which can sit far
+      // enough right (a wide card, or the trailing blank space `containScroll:
+      // false` allows past the last card) that an unclamped translateX pushes
+      // this absolutely positioned caption past the page's right edge,
+      // widening document scroll instead of just the carousel's own.
+      const maxX = Math.max(0, wrapperRect.width - caption.offsetWidth);
+      const x = Math.min(Math.max(anchorLeft - wrapperRect.left, 0), maxX);
+      caption.style.transform = `translateX(${x}px)`;
     }
 
     function updateCaption(index: number) {
