@@ -10,6 +10,8 @@ This project has zero client side JavaScript today beyond what Astro itself emit
 
 A related, larger decision, project detail or case study pages, is listed in scope as a separate, undecided, deferred item. The engineer confirmed cards should stay non-interactive (no click-through) in this spec, so this carousel does not depend on that decision.
 
+**Card sizing (added after the initial build shipped).** The carousel initially shipped with every card at one fixed width (`w-72`, clamped to `78vw` on narrow phones), a uniform 3:2 crop regardless of the source photo's actual shape. Once built and previewed, the engineer asked for sizing closer to the oliviercarignan.com reference (already this spec's interaction model): cards that are not all equally sized, in roughly an 850 wide by 550 tall range, so a card is not always fully visible on screen at once. This changes AC-9 and adds a new consideration: what determines each card's size, and what happens when a project's image doesn't fit whatever range is chosen.
+
 ## Options considered
 
 ### Option 1: Embla Carousel (a lightweight, framework-agnostic drag/scroll library) (chosen)
@@ -49,11 +51,47 @@ A fuller-featured carousel library (about 27KB gzipped, MIT) with built-in momen
 - About 4x Embla's weight for a single carousel on an otherwise dependency-free static site.
 - Its keyboard model assumes one tab stop per slide, the opposite of the single-region pattern AC-3 asks for, so its built-in behavior has to be partly overridden anyway.
 
+### Card sizing: Option A: Fixed height, width from the cover's natural aspect ratio, hard error outside the envelope (chosen)
+
+Every card shares one height. Width is computed per project from its cover image's own natural aspect ratio (already available from Astro's `image()` metadata at build time, `width`/`height` on `ImageMetadata`) at that height. A defined `[MIN_WIDTH, MAX_WIDTH]` envelope bounds what's acceptable; a project whose computed width falls outside it fails `pnpm build` with a descriptive error, rather than being silently forced to fit.
+
+**Pros**:
+- Zero new content field: variation comes for free from whatever photo already exists per project, closest to how the reference site's own varied crops read (each image shown close to its real shape, not force-cropped into one ratio).
+- The hard error matches this project's existing convention for a broken/unsuitable content entry (spec 0003: a malformed required field already fails the build), so this isn't a new failure mode to learn, just the same one applied to image dimensions.
+
+**Cons**:
+- A dev adding a new project must pre-crop or resize its cover to fit the envelope, or the build breaks; more friction than a version that always renders something.
+- The exact envelope is a judgment call with no single right number; it has to be tuned by eye against the real project photos rather than derived from a rule.
+
+### Card sizing: Option B: Fixed height, width silently clamped or cropped into the envelope
+
+Same fixed height and natural-aspect-ratio width computation, but instead of erroring, an out of range result is silently forced to fit: cropped further, or clamped to `MIN_WIDTH`/`MAX_WIDTH` regardless of what that does to the image's real proportions.
+
+**Pros**:
+- The build never breaks on a new project's image; always renders something.
+
+**Cons**:
+- A clamped or over-cropped card silently drifts from the photo's actual look, defeating the point of sizing cards from the image's real shape in the first place, and the drift is easy to miss since nothing signals it happened.
+- Contradicts this project's established pattern of failing loudly on unsuitable content (spec 0003) in favor of failing quietly, the opposite of what `AGENTS.md`'s explicit-error-returns rule asks for.
+
+### Card sizing: Option C: A curated size (or size preset) added per project to the content schema
+
+Add explicit `width`/`height` (or a small preset like small/medium/large) to the `projects` collection schema, so the engineer deliberately picks each project's presented size rather than deriving it from the image.
+
+**Pros**:
+- Full deliberate control over the exact look of each card, independent of whatever the source photo's proportions happen to be.
+
+**Cons**:
+- A new required field to fill in for every project (a spec 0003 content-model change), and one more thing to keep in sync with the actual image whenever it's replaced.
+- Duplicates information the image file already carries (its own aspect ratio); two sources of truth for the same shape.
+
 ## Rationale
 
 Embla's built-in momentum and snap physics are the closest match to the reference site's feel without the project hand-tuning an easing curve itself (basis: the engineer's stated reference, oliviercarignan.com), and at 7KB it stays consistent with this project's otherwise minimal footprint (basis: `AGENTS.md`, functional/minimal style). Its gap against the native approach, no free wheel/trackpad scroll, is a small, one-time cost (a single wheel handler) against a real requirement either option must meet: WCAG 2.5.7 requires *some* non-drag pointer path regardless of implementation (basis: `.agents/skills/accessibility/SKILL.md`, "Dragging movements (2.5.7)"), so this is not unique overhead introduced by choosing Embla.
 
 The native scroll-snap option (Option 2) is a reasonable alternative, and would get AC-2 for free, but the momentum feel that most directly answers the engineer's reference is something Embla has already solved; re-deriving that with hand-tuned physics is exactly the kind of drag-interaction subtlety (velocity sampling, resize handling) most likely to produce visible bugs first. Splide (Option 3) solves the keyboard/ARIA question out of the box, but that box assumes a different keyboard model (one tab stop per slide) than the single-region pattern this spec settled on for AC-3, so its built-in behavior would be partly overridden anyway, at nearly 4x the weight.
+
+**Card sizing**: the engineer specified this mechanism directly (fixed height, width from the cover's natural aspect ratio, hard error outside the envelope), which is Option A. It also best fits this project's existing conventions: it needs no new content field (basis: minimal footprint, `AGENTS.md`), and it fails the build loudly on an unsuitable image rather than quietly degrading the result, the same pattern spec 0003 already established for a malformed required field (basis: `AGENTS.md`, "explicit error returns, not ad hoc try/catch"). Option B (silent clamp/crop) was rejected specifically because it violates that convention: a card that quietly stops matching its photo's real shape is a harder bug to catch than a build that fails with a clear message. Option C (a curated per-project field) was rejected as unnecessary duplication: the image file already carries its own aspect ratio, so a second, hand-maintained source of the same fact adds upkeep for no real gain in this feature's restrained, low-content-volume context (3 seeded projects today).
 
 ## References
 
