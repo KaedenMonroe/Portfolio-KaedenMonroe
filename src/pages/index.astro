@@ -21,22 +21,24 @@ const projects = await getVisibleProjects();
     <Nav name={name} resumeHref={resumeUrl} />
 
     <SectionWrapper id="about" aria-label="About">
-      <div class="flex items-center gap-4">
-        <Avatar src={avatar} alt={avatarAlt} />
-        <div>
-          <p class="text-xl font-medium">{name}</p>
-          <p class="text-base text-text-secondary">{title}</p>
+      <div class="lg:mx-auto lg:max-w-(--content-width-narrow)">
+        <div class="flex items-center gap-4">
+          <Avatar src={avatar} alt={avatarAlt} />
+          <div>
+            <p class="text-xl font-medium">{name}</p>
+            <p class="text-base text-text-secondary">{title}</p>
+          </div>
         </div>
+        <div class="mt-8 flex flex-col gap-4 text-base">
+          <Content />
+        </div>
+        <ul class="mt-6 flex items-center gap-3 text-base sm:gap-6">
+          <li><InlineLink href={`mailto:${email}`}>Email</InlineLink></li>
+          <li>
+            <InlineLink href={linkedinUrl} external>LinkedIn</InlineLink>
+          </li>
+        </ul>
       </div>
-      <div class="mt-8 flex max-w-[650px] flex-col gap-4 text-base">
-        <Content />
-      </div>
-      <ul class="mt-6 flex items-center gap-3 text-base sm:gap-6">
-        <li><InlineLink href={`mailto:${email}`}>Email</InlineLink></li>
-        <li>
-          <InlineLink href={linkedinUrl} external>LinkedIn</InlineLink>
-        </li>
-      </ul>
     </SectionWrapper>
 
     <SectionWrapper id="projects" spaced aria-label="Projects">
