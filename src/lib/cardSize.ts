@@ -2,8 +2,8 @@
 // breakpoint tier; a card's width follows from its own cover image's
 // natural aspect ratio at that tier's height. Component-level constants,
 // not design tokens (see docs/specs/0004-interactive-project-carousel).
-// Starting values only — tune live in the dev server against the real
-// project photos, then update here.
+// Desktop tier tuned and confirmed live against the real project photos
+// (see rationale.md); mobile/tablet are still starting values.
 export const CARD_HEIGHT_MOBILE = 320;
 export const CARD_HEIGHT_TABLET = 420;
 // Trimmed from 550 (single-frame layout experiment): the carousel is one

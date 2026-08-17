@@ -15,33 +15,42 @@ const projects = await getVisibleProjects();
 ---
 
 <Layout title={name} description={`${title}. Bio, research, and project work.`}>
-  <div class="mx-auto max-w-4xl px-6">
-    <Nav name={name} resumeHref={resumeUrl} />
+  <div class="lg:flex lg:min-h-screen lg:flex-col">
+    <div class="mx-auto max-w-4xl px-6 lg:shrink-0">
+      <Nav name={name} resumeHref={resumeUrl} />
 
-    <SectionWrapper id="about" aria-label="About">
-      <div class="lg:mx-auto lg:max-w-(--content-width-narrow)">
-        <div class="flex items-center gap-4 lg:gap-3">
-          <Avatar src={avatar} alt={avatarAlt} />
-          <div>
-            <p class="text-xl font-medium" data-bio-name>{name}</p>
-            <p class="text-base text-text-secondary">{title}</p>
+      <SectionWrapper id="about" aria-label="About">
+        <div class="lg:mx-auto lg:max-w-(--content-width-narrow)">
+          <div class="flex items-center gap-4 lg:gap-3">
+            <Avatar src={avatar} alt={avatarAlt} />
+            <div>
+              <p class="text-xl font-medium" data-bio-name>{name}</p>
+              <p class="text-base text-text-secondary">{title}</p>
+            </div>
+          </div>
+          <div
+            class="mt-8 flex flex-col gap-4 text-base lg:mt-6 lg:gap-3 lg:leading-snug"
+          >
+            <Content />
           </div>
         </div>
-        <div
-          class="mt-8 flex flex-col gap-4 text-base lg:mt-6 lg:gap-3 lg:leading-snug"
-        >
-          <Content />
-        </div>
-      </div>
-    </SectionWrapper>
-  </div>
+      </SectionWrapper>
+    </div>
 
-  <SectionWrapper
-    id="projects"
-    spaced
-    aria-label="Projects"
-    class="mx-auto flex min-h-screen w-full max-w-[1800px] flex-col justify-center lg:min-h-0 lg:mt-16 lg:pb-24"
-  >
-    <ProjectCarousel projects={projects} />
-  </SectionWrapper>
+    <SectionWrapper
+      id="projects"
+      spaced
+      aria-label="Projects"
+      class="mx-auto flex min-h-screen w-full max-w-[1800px] flex-col justify-center lg:min-h-0 lg:mt-16 lg:shrink-0"
+    >
+      <ProjectCarousel projects={projects} />
+    </SectionWrapper>
+
+    <!-- Bottom slack (desktop only): grows to fill any leftover viewport
+         height so the page doesn't just end at the carousel; never
+         shrinks below 96px (this tier's old fixed pb-24), the floor for
+         "a little room to scroll" on a shorter viewport. A relationship
+         to whatever room is actually left, not a fixed size. -->
+    <div class="lg:min-h-24 lg:flex-1" aria-hidden="true"></div>
+  </div>
 </Layout>
